@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>TCP详解笔记</title>
+    <link href="/2020/09/29/TCP%E8%AF%A6%E8%A7%A3%E7%AC%94%E8%AE%B0/"/>
+    <url>/2020/09/29/TCP%E8%AF%A6%E8%A7%A3%E7%AC%94%E8%AE%B0/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1-面试常问问题"><a href="#1-面试常问问题" class="headerlink" title="1. 面试常问问题"></a>1. 面试常问问题</h2><h3 id="1-1-tcp的可靠性如何保证"><a href="#1-1-tcp的可靠性如何保证" class="headerlink" title="1.1. tcp的可靠性如何保证"></a>1.1. tcp的可靠性如何保证</h3><p>分块传送：数据被分割成最合适的数据块（UDP的数据报长度不变）</p><p>等待确认：通过定时器等待接收端发送确认请求，收不到确认则重发</p><p>确认回复：收到确认后发送确认回复(不是立即发送，通常推迟几分之一秒)</p><p>数据校验：保持首部和数据的校验和，检测数据传输过程有无变化</p><p>乱序排序：接收端能重排序数据，以正确的顺序交给应用端</p><p>重复丢弃：接收端能丢弃重复的数据包</p><p>流量缓冲：两端有固定大小的缓冲区（滑动窗口），防止速度不匹配丢数据</p><h3 id="1-2-状态机"><a href="#1-2-状态机" class="headerlink" title="1.2. 状态机"></a>1.2. 状态机</h3><p><img src="http://www.52im.net/data/attachment/forum/201609/01/135701r8w35cg7o2y887o7.png" alt="image"></p><h2 id="2-重传机制"><a href="#2-重传机制" class="headerlink" title="2. 重传机制"></a>2. 重传机制</h2><h2 id="3-RTT算法"><a href="#3-RTT算法" class="headerlink" title="3. RTT算法"></a>3. RTT算法</h2><h2 id="4-滑动窗口"><a href="#4-滑动窗口" class="headerlink" title="4. 滑动窗口"></a>4. 滑动窗口</h2><h2 id="5-拥塞控制"><a href="#5-拥塞控制" class="headerlink" title="5. 拥塞控制"></a>5. 拥塞控制</h2>]]></content>
+    
+    
+    <categories>
+      
+      <category>计算机网络</category>
+      
+      <category>TCP</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>计算机网络</tag>
+      
+      <tag>TCP</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>2020 Spring 6.824 Lab1 MapReduce笔记</title>
     <link href="/2020/09/28/2020-Spring-6-824-Lab1-MapReduce%E7%AC%94%E8%AE%B0/"/>
     <url>/2020/09/28/2020-Spring-6-824-Lab1-MapReduce%E7%AC%94%E8%AE%B0/</url>

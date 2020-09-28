@@ -174,6 +174,63 @@
   <div class="row mx-auto index-card">
     
     
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/29/TCP%E8%AF%A6%E8%A7%A3%E7%AC%94%E8%AE%B0/">TCP详解笔记</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/29/TCP%E8%AF%A6%E8%A7%A3%E7%AC%94%E8%AE%B0/">
+          
+          
+            
+          
+          1. 面试常问问题1.1. tcp的可靠性如何保证分块传送：数据被分割成最合适的数据块（UDP的数据报长度不变）
+等待确认：通过定时器等待接收端发送确认请求，收不到确认则重发
+确认回复：收到确认后发送确认回复(不是立即发送，通常推迟几分之一秒)
+数据校验：保持首部和数据的校验和，检测数据传输过程有无变化
+乱序排序：接收端能重排序数据，以正确的顺序交给应用端
+重复丢弃：接收端能丢弃重复的数据包
+流量
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-29 00:00" pubdate>
+              2020-09-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+            
+              <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP/">TCP</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+            
+              <a href="/tags/TCP/">TCP</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
       <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2020/09/28/2020-Spring-6-824-Lab1-MapReduce%E7%AC%94%E8%AE%B0/" target="_self">
           <img src="https://www.talend.com/wp-content/uploads/what-is-mapreduce.jpg" srcset="/img/loading.gif" alt="2020 Spring 6.824 Lab1 MapReduce笔记">
