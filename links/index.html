@@ -47,7 +47,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong>Yellow dog's den</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>Ayumu Haruto's den</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -266,10 +266,39 @@
   <footer class="mt-5">
   <div class="text-center py-3">
     <div>
-      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <p id="hitokoto">:D 获取中...</p>
+      <a href="https://github.com/keleqnma" target="_blank" rel="nofollow noopener">
+        <span>Coco's Github</span></a>
       <i class="iconfont icon-love"></i>
-      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
-        <span>Fluid</span></a>
+        <span id="timeDate">载入天数...</span>
+        <span id="times">载入时分秒...</span>
+        <script>
+        var now = new Date();
+        function createtime(){
+            var grt= new Date("09/28/2020 18:00:00");//此处修改你的建站时间或者网站上线时间
+            now.setTime(now.getTime()+250);
+            days = (now - grt ) / 1000 / 60 / 60 / 24;
+            dnum = Math.floor(days);
+            hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+            hnum = Math.floor(hours);
+            if(String(hnum).length ==1 ){
+                hnum = "0" + hnum;
+            }
+            minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+            mnum = Math.floor(minutes);
+            if(String(mnum).length ==1 ){
+                      mnum = "0" + mnum;
+            }
+            seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+            snum = Math.round(seconds);
+            if(String(snum).length ==1 ){
+                      snum = "0" + snum;
+            }
+            document.getElementById("timeDate").innerHTML = "have served for&nbsp"+dnum+"&nbspdays";
+            document.getElementById("times").innerHTML = hnum + "&nbsphours&nbsp" + mnum + "&nbspminutes&nbsp" + snum + "&nbspseconds";
+        }
+        setInterval("createtime()",250);
+        </script>
     </div>
     
 
@@ -280,6 +309,15 @@
 </footer>
 
 <!-- SCRIPTS -->
+  <script>
+    fetch('https://v1.hitokoto.cn?c=a&c=b&c=c')
+      .then(response => response.json())
+      .then(data => {
+        const hitokoto = document.getElementById('hitokoto')
+        hitokoto.innerText = data.hitokoto + ' --  ' + data.from
+      })
+          .catch(console.error)
+  </script>
 <script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
 <script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
 <script  src="/js/debouncer.js" ></script>
