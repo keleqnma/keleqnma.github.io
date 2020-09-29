@@ -145,7 +145,19 @@
             <span class="h2" id="subtitle">
               
             </span>
-
+            <span class="h2" id="subtitle">
+              
+            </span>
+          
+            
+            <br>
+            <span class="h2" id="hitokoto">
+              
+            </span>
+            
+          
+          
+          </div>
             
           </div>
 
@@ -354,10 +366,12 @@
   <footer class="mt-5">
   <div class="text-center py-3">
     <div>
-      <p id="hitokoto">:D 获取中...</p>
-      <a href="https://github.com/keleqnma" target="_blank" rel="nofollow noopener">
-        <span>Coco's Github</span></a>
-      <i class="iconfont icon-love"></i>
+      <p> 
+        <a href="https://github.com/keleqnma" target="_blank" rel="nofollow noopener">
+          <span>Yellow dog's Github</span>
+        </a>
+       </p>
+        <i class="iconfont icon-love"></i>
         <span id="timeDate">载入天数...</span>
         <span id="times">载入时分秒...</span>
         <script>
@@ -382,7 +396,7 @@
             if(String(snum).length ==1 ){
                       snum = "0" + snum;
             }
-            document.getElementById("timeDate").innerHTML = "have served for&nbsp"+dnum+"&nbspdays";
+            document.getElementById("timeDate").innerHTML = "Served for&nbsp"+dnum+"&nbspdays";
             document.getElementById("times").innerHTML = hnum + "&nbsphours&nbsp" + mnum + "&nbspminutes&nbsp" + snum + "&nbspseconds";
         }
         setInterval("createtime()",250);
@@ -397,15 +411,6 @@
 </footer>
 
 <!-- SCRIPTS -->
-  <script>
-    fetch('https://v1.hitokoto.cn?c=a&c=b&c=c')
-      .then(response => response.json())
-      .then(data => {
-        const hitokoto = document.getElementById('hitokoto')
-        hitokoto.innerText = data.hitokoto + ' --  ' + data.from
-      })
-          .catch(console.error)
-  </script>
 <script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
 <script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
 <script  src="/js/debouncer.js" ></script>
@@ -437,22 +442,31 @@
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
   <script>
-    var typed = new Typed('#subtitle', {
-      strings: [
-        '  ',
-        "分类&nbsp;",
-      ],
-      cursorChar: "_",
-      typeSpeed: 70,
-      loop: false,
-    });
-    typed.stop();
-    $(document).ready(function () {
-      $(".typed-cursor").addClass("h2");
-      typed.start();
-    });
+    function typing(id, title){
+        var typed = new Typed('#' + id, {
+            strings: [
+              '  ',
+              title + "&nbsp;",
+            ],
+            cursorChar: "_",
+            typeSpeed: 70,
+            loop: false,
+        });
+        typed.stop();
+        $(document).ready(function () {
+            $(".typed-cursor").addClass("h2");
+            typed.start();
+        });
+    }
+    
+        fetch('https://v1.hitokoto.cn?c=a&c=b&c=c')
+        .then(response => response.json())
+        .then(data => {
+           typing("hitokoto", '"' + data.hitokoto + '"' + ' —— ' + '《' + data.from + '》' + '</h5>')
+        })
+        .catch(console.error)
+    
   </script>
-
 
 
 
