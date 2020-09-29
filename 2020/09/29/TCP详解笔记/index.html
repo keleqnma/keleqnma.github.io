@@ -60,7 +60,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong>Ayumu Haruto's den</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>大黄狗之窝</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -158,59 +158,22 @@
             <span class="h2" id="subtitle">
               
             </span>
-            <span class="h2" id="subtitle">
-              
-            </span>
           
             
-          
-          
-          <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-09-29 00:00" pubdate>
-        2020年9月29日 凌晨
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      221 字
-    </span>
-  
-
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      2
-       分钟
-    </span>
-  
-
-  
-  
-</div>
 
           
-          </div>
-            
               <div class="mt-3">
   
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      keleqnma
+    </span>
+  
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-09-29 00:00" pubdate>
-        2020年9月29日 凌晨
+        星期二, 九月 29日 2020, 12:00 凌晨
       </time>
     </span>
   
@@ -237,6 +200,14 @@
   
 
   
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
   
 </div>
 
@@ -322,6 +293,36 @@
             </div>
 
             
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://example.com/2020/09/29/TCP%E8%AF%A6%E8%A7%A3%E7%AC%94%E8%AE%B0/';
+        this.page.identifier = '/2020/09/29/TCP%E8%AF%A6%E8%A7%A3%E7%AC%94%E8%AE%B0/';
+      };
+      function loadDisqus() {
+        (function () {
+          var d = document,
+            s = d.createElement('script');
+          s.src = '//' + 'fluid' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      }
+      waitElementVisible('disqus_thread', loadDisqus);
+    </script>
+    <noscript>Please enable JavaScript to view the
+      <a target="_blank" href="https://disqus.com/?ref_noscript" rel="nofollow noopener noopener">comments powered by Disqus.</a>
+    </noscript>
+  </div>
+
+
+              </article>
+            
           </article>
         </div>
       </div>
@@ -389,34 +390,9 @@
         <i class="iconfont icon-love"></i>
         <span id="timeDate">载入天数...</span>
         <span id="times">载入时分秒...</span>
-        <script>
-        var now = new Date();
-        function createtime(){
-            var grt= new Date("09/28/2020 18:00:00");//此处修改你的建站时间或者网站上线时间
-            now.setTime(now.getTime()+250);
-            days = (now - grt ) / 1000 / 60 / 60 / 24;
-            dnum = Math.floor(days);
-            hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
-            hnum = Math.floor(hours);
-            if(String(hnum).length ==1 ){
-                hnum = "0" + hnum;
-            }
-            minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
-            mnum = Math.floor(minutes);
-            if(String(mnum).length ==1 ){
-                      mnum = "0" + mnum;
-            }
-            seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-            snum = Math.round(seconds);
-            if(String(snum).length ==1 ){
-                      snum = "0" + snum;
-            }
-            document.getElementById("timeDate").innerHTML = "Served for&nbsp"+dnum+"&nbspdays";
-            document.getElementById("times").innerHTML = hnum + "&nbsphours&nbsp" + mnum + "&nbspminutes&nbsp" + snum + "&nbspseconds";
-        }
-        setInterval("createtime()",250);
-        </script>
     </div>
+    
+    
     
 
     
@@ -426,6 +402,52 @@
 </footer>
 
 <!-- SCRIPTS -->
+<script>
+  $(document).ready(function () {
+
+      var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+      var pvcountOffset = 100;  // 初始化首次数据
+      var uvcountOffset = 50;
+
+      function fixCount() {
+          if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+              $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+              clearInterval(int);
+          }
+          if ($("#busuanzi_container_site_pv").css("display") != "none") {
+              $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据 
+              clearInterval(int); // 停止检测
+          }
+      }
+  });
+</script>
+<script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("09/28/2020 18:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "Served for&nbsp"+dnum+"&nbspdays";
+      document.getElementById("times").innerHTML = hnum + "&nbsphours&nbsp" + mnum + "&nbspminutes&nbsp" + snum + "&nbspseconds";
+  }
+  setInterval("createtime()",250);
+</script>
 <script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
 <script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
 <script  src="/js/debouncer.js" ></script>
@@ -566,5 +588,5 @@
 
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</body>
 </html>
