@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      221 字
+      1.3k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      2
+      13
        分钟
     </span>
   
@@ -235,15 +235,46 @@
             <h1 style="display: none">TCP详解笔记</h1>
             
             <div class="markdown-body" id="post-body">
-              <h2 id="1-面试常问问题"><a href="#1-面试常问问题" class="headerlink" title="1. 面试常问问题"></a>1. 面试常问问题</h2><h3 id="1-1-tcp的可靠性如何保证"><a href="#1-1-tcp的可靠性如何保证" class="headerlink" title="1.1. tcp的可靠性如何保证"></a>1.1. tcp的可靠性如何保证</h3><p>分块传送：数据被分割成最合适的数据块（UDP的数据报长度不变）</p>
+              <h2 id="0-总述"><a href="#0-总述" class="headerlink" title="0. 总述"></a>0. 总述</h2><p>TCP发展到今天已经是非常成熟的协议了，作为<strong>传输层（Tranport Layer）</strong>协议，可供跨任意网络可靠地传输数据。以TCP端口的形式为应用程序提供传输层寻址（transport-layer addressing），并用这些端口在机器之间建立连接。一旦建立了连接，就可以在两个设备之间<strong>双向</strong>传递数据。应用程序可以将数据作为简单的字节流发送到TCP端口，而TCP协议负责将数据打包为IP报文发送。接收设备的TCP实现将过程逆转，将最初发送的数据流传递给应用程序。</p>
+<p>TCP包含很多机制，以确保数据的可靠性，一致性和及时性。这其中关键是<strong>滑动窗口</strong>，该机制要求每个设备追踪已发送的数据（即要求收到ACK），并确认接收到的数据（收到数据后会发送ACK）。未确认的数据会自动重传，并且可以根据设备和连接的需要调整系统的参数。该系统还提供了设备之间的缓冲和流控制功能，以处理不均匀的数据传输速率和其他问题。</p>
+<p>TCP可以最大程度地满足几乎所有需要<strong>面向连接（connection-oriented）</strong>的<strong>可靠</strong>数据传递需要。这是TCP的主要目标，因为这意味着高层应用程序不必单独提供这些通用功能。 TCP是最广泛使用的TCP / IP传输协议，大多数应用程序都采用TCP。</p>
+<div class="note note-success">
+            <p>概括一下TCP的<strong>主要特征</strong>：我们可以说它是<strong>面向连接的，双向的，多连接的，可靠的，需要确认的，面向流和流管理的</strong>。</p>
+          </div>
+
+
+<h2 id="1-TCP究竟干了啥？"><a href="#1-TCP究竟干了啥？" class="headerlink" title="1. TCP究竟干了啥？"></a>1. TCP究竟干了啥？</h2><h3 id="1-1-TCP能干啥？"><a href="#1-1-TCP能干啥？" class="headerlink" title="1.1. TCP能干啥？"></a>1.1. TCP能干啥？</h3><ol>
+<li><p><strong>寻址/多路复用：</strong> 像UDP一样，TCP的一项重要工作是多路复用从不同进程接收到的数据，以便可以使用基础网络层协议将其发送出去。</p>
+</li>
+<li><p><strong>连接的建立，管理和终止</strong>：设备可以遵循TCP标准流程来建立可以传输数据的TCP连接。一旦连接建立，TCP就会开始管理该连接以及处理问题。当设备启动关闭TCP连接后，会有一个特殊的TCP进程将此连接中止。</p>
+</li>
+<li><p><strong>数据处理和打包：</strong>TCP定义了一种机制，应用程序可以通过该机制从更高层向其发送数据。然后，将这些数据打包成消息，以发送到目标TCP软件。目标软件将数据打包，然后将其提供给目标计算机上的应用程序。</p>
+</li>
+<li><p><strong>数据传输：</strong>从概念上讲，传输设备上的TCP实现负责将打包的数据传输到另一设备上的TCP进程。遵循分层原理，这是通过使发送机上的TCP软件将数据包传递到基础网络层协议（IP协议）来完成的。</p>
+</li>
+<li><p><strong>提供可靠性和传输质量服务：</strong> 使用TCP协议发送数据是“可靠的”。这意味着，使用TCP不必担心数据没有被发送，数据没有抵达，或以错误的顺序到达。这也意味着避免了直接使用IP协议发送数据可能会出现的其他常见问题。</p>
+</li>
+<li><p><strong>流控制和拥塞避免：</strong>TCP控制和管理两个设备之间的数据流，以及处理通信期间可能遇到的拥塞的。</p>
+</li>
+</ol>
+<h3 id="1-2-TCP不能干啥？"><a href="#1-2-TCP不能干啥？" class="headerlink" title="1.2. TCP不能干啥？"></a>1.2. TCP不能干啥？</h3><ol>
+<li><p><strong>指定应用用途：</strong> TCP没有具体描述应用程序该如何使用TCP。</p>
+</li>
+<li><p><strong>提供安全性：</strong>TCP不提供任何机制来确保其传输的数据的真实性或私密性。如果需要这些，则必须使用其他某种方式来完成，例如IPSec。</p>
+</li>
+<li><p><strong>维护消息边界：</strong>TCP将数据作为连续流而不是离散消息发送。应该由应用程序决定一条消息的结束位置和下一条消息的开始位置。</p>
+</li>
+<li><p><strong>保证通信：</strong>TCP会检测未确认的传输，并在需要时重新发送。但是，如果出现某种问题导致无法可靠通信，则所有TCP可以做的就是“继续尝试”。它无法做出任何保证，因为有太多事情无法控制。同样，它可以尝试管理数据流，但不能解决所有问题。</p>
+</li>
+</ol>
+<h2 id="2-重传机制"><a href="#2-重传机制" class="headerlink" title="2. 重传机制"></a>2. 重传机制</h2><h2 id="3-RTT算法"><a href="#3-RTT算法" class="headerlink" title="3. RTT算法"></a>3. RTT算法</h2><h2 id="4-滑动窗口"><a href="#4-滑动窗口" class="headerlink" title="4. 滑动窗口"></a>4. 滑动窗口</h2><h2 id="5-拥塞控制"><a href="#5-拥塞控制" class="headerlink" title="5. 拥塞控制"></a>5. 拥塞控制</h2><h2 id="6-面试常问问题"><a href="#6-面试常问问题" class="headerlink" title="6. 面试常问问题"></a>6. 面试常问问题</h2><h3 id="6-1-tcp的可靠性如何保证"><a href="#6-1-tcp的可靠性如何保证" class="headerlink" title="6.1. tcp的可靠性如何保证"></a>6.1. tcp的可靠性如何保证</h3><p>分块传送：数据被分割成最合适的数据块（UDP的数据报长度不变）</p>
 <p>等待确认：通过定时器等待接收端发送确认请求，收不到确认则重发</p>
 <p>确认回复：收到确认后发送确认回复(不是立即发送，通常推迟几分之一秒)</p>
 <p>数据校验：保持首部和数据的校验和，检测数据传输过程有无变化</p>
 <p>乱序排序：接收端能重排序数据，以正确的顺序交给应用端</p>
 <p>重复丢弃：接收端能丢弃重复的数据包</p>
 <p>流量缓冲：两端有固定大小的缓冲区（滑动窗口），防止速度不匹配丢数据</p>
-<h3 id="1-2-状态机"><a href="#1-2-状态机" class="headerlink" title="1.2. 状态机"></a>1.2. 状态机</h3><p><img src="http://www.52im.net/data/attachment/forum/201609/01/135701r8w35cg7o2y887o7.png" srcset="/img/loading.gif" alt="image"></p>
-<h2 id="2-重传机制"><a href="#2-重传机制" class="headerlink" title="2. 重传机制"></a>2. 重传机制</h2><h2 id="3-RTT算法"><a href="#3-RTT算法" class="headerlink" title="3. RTT算法"></a>3. RTT算法</h2><h2 id="4-滑动窗口"><a href="#4-滑动窗口" class="headerlink" title="4. 滑动窗口"></a>4. 滑动窗口</h2><h2 id="5-拥塞控制"><a href="#5-拥塞控制" class="headerlink" title="5. 拥塞控制"></a>5. 拥塞控制</h2>
+
             </div>
             <hr>
             <div>
