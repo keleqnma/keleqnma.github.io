@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="keleqnma">
   <meta name="keywords" content="">
-  <title>2020 Spring 6.824 Lab2 Raft笔记 - Yellow dog&#39;s den</title>
+  <title>2020 Spring 6.824 Lab2A Raft笔记 - Yellow dog&#39;s den</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      958 字
+      1k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      16
+      17
        分钟
     </span>
   
@@ -232,10 +232,12 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">2020 Spring 6.824 Lab2 Raft笔记</h1>
+            <h1 style="display: none">2020 Spring 6.824 Lab2A Raft笔记</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="2020-Spring-6-824-Lab2-Raft笔记"><a href="#2020-Spring-6-824-Lab2-Raft笔记" class="headerlink" title="2020 Spring 6.824 Lab2 Raft笔记"></a>2020 Spring 6.824 Lab2 Raft笔记</h1><h2 id="0-测试代码-amp-Config代码逻辑"><a href="#0-测试代码-amp-Config代码逻辑" class="headerlink" title="0. 测试代码&amp;Config代码逻辑"></a>0. 测试代码&amp;Config代码逻辑</h2><p>读懂测试代码都干了什么，我们才能开始工作！</p>
+              <h1 id="2020-Spring-6-824-Lab2A-Raft笔记"><a href="#2020-Spring-6-824-Lab2A-Raft笔记" class="headerlink" title="2020 Spring 6.824 Lab2A Raft笔记"></a>2020 Spring 6.824 Lab2A Raft笔记</h1><h2 id="0-Raft算法"><a href="#0-Raft算法" class="headerlink" title="0. Raft算法"></a>0. Raft算法</h2><p>肯定最好先论文：<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf">https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf</a></p>
+<p>这个Raft可视化也不错，如果看不下论文可以先看一遍这个：<a target="_blank" rel="noopener" href="http://thesecretlivesofdata.com/raft/">http://thesecretlivesofdata.com/raft/</a></p>
+<h2 id="1-测试代码-amp-Config代码逻辑"><a href="#1-测试代码-amp-Config代码逻辑" class="headerlink" title="1. 测试代码&amp;Config代码逻辑"></a>1. 测试代码&amp;Config代码逻辑</h2><p>读懂测试代码都干了什么，我们才能开始工作！</p>
 <pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestInitialElection2A</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
 	servers := <span class="hljs-number">3</span>
 	cfg := make_config(t, servers, <span class="hljs-literal">false</span>)
@@ -266,7 +268,7 @@
 
 	cfg.end()
 &#125;</code></pre>
-<p>测试代码注册了一个config（传入参数为3），config注册了三个Raft节点，并完成一系列初始化操作：初始化RPCNet，初始化ApplyErr（对应节点在接收commit时报的错），初始化logs(用于存储key-value结构的数据），连接状态等等，比如这个启动Raft节点的代码：</p>
+<p>测试代码注册了一个config（传入参数为3），config注册了三个Raft节点，并完成一系列初始化操作：初始化RPCNet，初始化ApplyErr（对应节点在接收commit时报的错），初始化logs(用于存储key-value结构的Entry数据），连接状态等等，比如这个启动Raft节点的代码：</p>
 <pre><code class="hljs go"><span class="hljs-comment">//</span>
 <span class="hljs-comment">// start or re-start a Raft.</span>
 <span class="hljs-comment">// if one already exists, &quot;kill&quot; it first.</span>
@@ -382,6 +384,9 @@
 	return rf
 &#125;</code></pre>
 <p>随后用raft server初始化一个service，初始化一个空server，把该service添加到server里，再在RPCNet里添加该Server。</p>
+<h2 id="2-定义结构"><a href="#2-定义结构" class="headerlink" title="2.定义结构"></a>2.定义结构</h2><ol>
+<li>定义Raft结构<br><img src="/img/raft/RaftState.png" srcset="/img/loading.gif" alt="img"></li>
+</ol>
 
             </div>
             <hr>
@@ -660,7 +665,7 @@
         });
     }
     
-        typing("subtitle", "2020 Spring 6.824 Lab2 Raft笔记")
+        typing("subtitle", "2020 Spring 6.824 Lab2A Raft笔记")
     
   </script>
 
