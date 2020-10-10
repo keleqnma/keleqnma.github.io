@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="keleqnma">
   <meta name="keywords" content="">
-  <title>2020 Spring 6.824 Raft Lab2A Leader Election笔记 - Yellow dog&#39;s den</title>
+  <title>2020 Spring 6.824 Lab2A Raft Leader Election笔记 - Yellow dog&#39;s den</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.7k 字
+      2.8k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      37
+      38
        分钟
     </span>
   
@@ -232,12 +232,13 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">2020 Spring 6.824 Raft Lab2A Leader Election笔记</h1>
+            <h1 style="display: none">2020 Spring 6.824 Lab2A Raft Leader Election笔记</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="2020-Spring-6-824-Lab2A-Raft笔记"><a href="#2020-Spring-6-824-Lab2A-Raft笔记" class="headerlink" title="2020 Spring 6.824 Lab2A Raft笔记"></a>2020 Spring 6.824 Lab2A Raft笔记</h1><h2 id="0-Raft算法"><a href="#0-Raft算法" class="headerlink" title="0. Raft算法"></a>0. Raft算法</h2><p>最好先看一遍论文原文：<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf">https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf</a></p>
+              <h1 id="2020-Spring-6-824-Lab2A-Raft笔记"><a href="#2020-Spring-6-824-Lab2A-Raft笔记" class="headerlink" title="2020 Spring 6.824 Lab2A Raft笔记"></a>2020 Spring 6.824 Lab2A Raft笔记</h1><h2 id="0-Raft算法基础"><a href="#0-Raft算法基础" class="headerlink" title="0. Raft算法基础"></a>0. Raft算法基础</h2><p>最好先看一遍论文原文：<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf">https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf</a></p>
 <p>这个中文翻译很不错，我的注释代码很多都是参照里面：<a target="_blank" rel="noopener" href="https://github.com/maemual/raft-zh_cn/blob/master/raft-zh_cn.md">https://github.com/maemual/raft-zh_cn/blob/master/raft-zh_cn.md</a></p>
 <p>这个Raft可视化也不错，如果看不下论文可以先看一遍这个：<a target="_blank" rel="noopener" href="http://thesecretlivesofdata.com/raft/">http://thesecretlivesofdata.com/raft/</a></p>
+<p>本章代码地址：<a target="_blank" rel="noopener" href="https://github.com/keleqnma/6.824-notes-codes/tree/master/src/raft">https://github.com/keleqnma/6.824-notes-codes/tree/master/src/raft</a></p>
 <h2 id="1-测试代码-amp-Config代码逻辑"><a href="#1-测试代码-amp-Config代码逻辑" class="headerlink" title="1. 测试代码&amp;Config代码逻辑"></a>1. 测试代码&amp;Config代码逻辑</h2><p>读懂测试代码都干了什么，我们才能开始工作！</p>
 <pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestInitialElection2A</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
 	servers := <span class="hljs-number">3</span>
@@ -385,7 +386,7 @@
 	return rf
 &#125;</code></pre>
 <p>随后用raft server初始化一个service，初始化一个空server，把该service添加到server里，再在RPCNet里添加该Server。</p>
-<h2 id="2-定义结构"><a href="#2-定义结构" class="headerlink" title="2.定义结构"></a>2.定义结构</h2><h3 id="2-1-Raft-State"><a href="#2-1-Raft-State" class="headerlink" title="2.1. Raft State"></a>2.1. Raft State</h3><p><img src="/img/raft/RaftState.png" srcset="/img/loading.gif" alt="img"></p>
+<h2 id="2-定义结构"><a href="#2-定义结构" class="headerlink" title="2. 定义结构"></a>2. 定义结构</h2><h3 id="2-1-Raft-State"><a href="#2-1-Raft-State" class="headerlink" title="2.1. Raft State"></a>2.1. Raft State</h3><p><img src="/img/raft/RaftState.png" srcset="/img/loading.gif" alt="img"></p>
 <pre><code class="hljs awk">type Raft struct &#123;
 	mu        sync.Mutex          <span class="hljs-regexp">//</span> lock to protect shared access to this pee<span class="hljs-string">r&#x27;s state</span>
 <span class="hljs-string">	peers     []*labrpc.ClientEnd // RPC end points of all peers</span>
@@ -449,7 +450,7 @@
 			&#125;
 		&#125;
 	&#125;()</code></pre>
-<h3 id="3-2-发起选举，选出Leader"><a href="#3-2-发起选举，选出Leader" class="headerlink" title="3.2. 发起选举，选出Leader"></a>3.2. 发起选举，选出Leader</h3><h3 id="3-2-1-发出选举要求"><a href="#3-2-1-发出选举要求" class="headerlink" title="3.2.1. 发出选举要求"></a>3.2.1. 发出选举要求</h3><p>要开始一次选举过程，跟随者先要增加自己的当前任期号并且转换到Candidate。然后它向集群中的其他节点发送<strong>RequestVoteArgs</strong>来给自己投票。直到以下任意发生：</p>
+<h3 id="3-2-发起选举，选出Leader"><a href="#3-2-发起选举，选出Leader" class="headerlink" title="3.2. 发起选举，选出Leader"></a>3.2. 发起选举，选出Leader</h3><h4 id="3-2-1-发出选举要求"><a href="#3-2-1-发出选举要求" class="headerlink" title="3.2.1. 发出选举要求"></a>3.2.1. 发出选举要求</h4><p>要开始一次选举过程，跟随者先要增加自己的当前任期号并且转换到Candidate。然后它向集群中的其他节点发送<strong>RequestVoteArgs</strong>来给自己投票。直到以下任意发生：</p>
 <ol>
 <li>赢得选举<blockquote>
 <p>当一个候选人从整个集群的大多数服务器节点获得了针对同一个任期号的选票，那么他就赢得了这次选举并成为领导人。每一个服务器最多会对一个任期号投出一张选票，按照先来先服务的原则。要求大多数选票的规则确保了最多只会有一个候选人赢得此次选举。一旦候选人赢得选举，他就立即成为领导人。然后他会向其他的服务器发送心跳消息来建立自己的权威并且阻止新的领导人的产生。</p>
@@ -465,7 +466,7 @@
 </li>
 </ol>
 <p>Raft 算法使用随机选举超时时间的方法来确保很少会发生选票瓜分的情况，就算发生也能很快的解决。为了阻止选票起初就被瓜分，选举超时时间是从一个固定的区间（例如 150-300 毫秒）随机选择。这样可以把服务器都分散开以至于在大多数情况下只有一个服务器会选举超时；然后他赢得选举并在其他服务器超时之前发送心跳包。同样的机制被用在选票瓜分的情况下。每一个候选人在开始一次选举的时候会重置一个<strong>随机的选举超时时间</strong>，然后在超时时间内等待投票的结果；这样减少了在新的选举中另外的选票瓜分的可能性。</p>
-<h3 id="3-2-2-接收选举要求"><a href="#3-2-2-接收选举要求" class="headerlink" title="3.2.2. 接收选举要求"></a>3.2.2. 接收选举要求</h3><pre><code class="hljs go"><span class="hljs-comment">// 选举人的term小于当前服务器的term，拒绝投票</span>
+<h4 id="3-2-2-接收选举要求"><a href="#3-2-2-接收选举要求" class="headerlink" title="3.2.2. 接收选举要求"></a>3.2.2. 接收选举要求</h4><pre><code class="hljs go"><span class="hljs-comment">// 选举人的term小于当前服务器的term，拒绝投票</span>
 <span class="hljs-keyword">if</span> req.Term &lt; rf.currentTerm &#123;
 	<span class="hljs-keyword">return</span>
 &#125;
@@ -497,7 +498,8 @@ rf.changeRole(Follower)
    <span class="hljs-comment">// 刷新计时器</span>
 rf.resetElectionTimer()
 rf.log(<span class="hljs-string">&quot;vote for:%d&quot;</span>, req.CandidateId)</code></pre>
-<h3 id="3-3-选举完成，Leader发送心跳"><a href="#3-3-选举完成，Leader发送心跳" class="headerlink" title="3.3. 选举完成，Leader发送心跳"></a>3.3. 选举完成，Leader发送心跳</h3>
+<h3 id="3-3-选举完成，Leader发送心跳"><a href="#3-3-选举完成，Leader发送心跳" class="headerlink" title="3.3. 选举完成，Leader发送心跳"></a>3.3. 选举完成，Leader发送心跳</h3><p>2A里其实没啥好说的，实测就算你不写心跳也能过那两个test，算是测试的设计疏漏吧，appendentries我会放到2B里一起讲。</p>
+
             </div>
             <hr>
             <div>
@@ -775,7 +777,7 @@ rf.log(<span class="hljs-string">&quot;vote for:%d&quot;</span>, req.CandidateId
         });
     }
     
-        typing("subtitle", "2020 Spring 6.824 Raft Lab2A Leader Election笔记")
+        typing("subtitle", "2020 Spring 6.824 Lab2A Raft Leader Election笔记")
     
   </script>
 
