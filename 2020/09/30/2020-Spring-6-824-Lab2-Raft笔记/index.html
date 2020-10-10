@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="keleqnma">
   <meta name="keywords" content="">
-  <title>2020 Spring 6.824 Lab2A Raft笔记 - Yellow dog&#39;s den</title>
+  <title>2020 Spring 6.824 Raft Lab2A Leader Election笔记 - Yellow dog&#39;s den</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      2.7k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      17
+      37
        分钟
     </span>
   
@@ -232,10 +232,11 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">2020 Spring 6.824 Lab2A Raft笔记</h1>
+            <h1 style="display: none">2020 Spring 6.824 Raft Lab2A Leader Election笔记</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="2020-Spring-6-824-Lab2A-Raft笔记"><a href="#2020-Spring-6-824-Lab2A-Raft笔记" class="headerlink" title="2020 Spring 6.824 Lab2A Raft笔记"></a>2020 Spring 6.824 Lab2A Raft笔记</h1><h2 id="0-Raft算法"><a href="#0-Raft算法" class="headerlink" title="0. Raft算法"></a>0. Raft算法</h2><p>肯定最好先论文：<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf">https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf</a></p>
+              <h1 id="2020-Spring-6-824-Lab2A-Raft笔记"><a href="#2020-Spring-6-824-Lab2A-Raft笔记" class="headerlink" title="2020 Spring 6.824 Lab2A Raft笔记"></a>2020 Spring 6.824 Lab2A Raft笔记</h1><h2 id="0-Raft算法"><a href="#0-Raft算法" class="headerlink" title="0. Raft算法"></a>0. Raft算法</h2><p>最好先看一遍论文原文：<a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf">https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf</a></p>
+<p>这个中文翻译很不错，我的注释代码很多都是参照里面：<a target="_blank" rel="noopener" href="https://github.com/maemual/raft-zh_cn/blob/master/raft-zh_cn.md">https://github.com/maemual/raft-zh_cn/blob/master/raft-zh_cn.md</a></p>
 <p>这个Raft可视化也不错，如果看不下论文可以先看一遍这个：<a target="_blank" rel="noopener" href="http://thesecretlivesofdata.com/raft/">http://thesecretlivesofdata.com/raft/</a></p>
 <h2 id="1-测试代码-amp-Config代码逻辑"><a href="#1-测试代码-amp-Config代码逻辑" class="headerlink" title="1. 测试代码&amp;Config代码逻辑"></a>1. 测试代码&amp;Config代码逻辑</h2><p>读懂测试代码都干了什么，我们才能开始工作！</p>
 <pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestInitialElection2A</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
@@ -384,10 +385,119 @@
 	return rf
 &#125;</code></pre>
 <p>随后用raft server初始化一个service，初始化一个空server，把该service添加到server里，再在RPCNet里添加该Server。</p>
-<h2 id="2-定义结构"><a href="#2-定义结构" class="headerlink" title="2.定义结构"></a>2.定义结构</h2><ol>
-<li>定义Raft结构<br><img src="/img/raft/RaftState.png" srcset="/img/loading.gif" alt="img"></li>
-</ol>
+<h2 id="2-定义结构"><a href="#2-定义结构" class="headerlink" title="2.定义结构"></a>2.定义结构</h2><h3 id="2-1-Raft-State"><a href="#2-1-Raft-State" class="headerlink" title="2.1. Raft State"></a>2.1. Raft State</h3><p><img src="/img/raft/RaftState.png" srcset="/img/loading.gif" alt="img"></p>
+<pre><code class="hljs awk">type Raft struct &#123;
+	mu        sync.Mutex          <span class="hljs-regexp">//</span> lock to protect shared access to this pee<span class="hljs-string">r&#x27;s state</span>
+<span class="hljs-string">	peers     []*labrpc.ClientEnd // RPC end points of all peers</span>
+<span class="hljs-string">	persister *Persister          // Object to hold this peer&#x27;</span>s persisted state
+	me        int                 <span class="hljs-regexp">//</span> this pee<span class="hljs-string">r&#x27;s index into peers[]</span>
+<span class="hljs-string">	dead      int32               // set by Kill()</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">	// Your data here (2A, 2B, 2C).</span>
+<span class="hljs-string">	// Look at the paper&#x27;</span>s Figure <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> a description of what
+	<span class="hljs-regexp">//</span> state a Raft server must maintain.
+	role        Role <span class="hljs-regexp">//</span>当前服务器的角色
+	currentTerm int  <span class="hljs-regexp">//</span>服务器已知最新的任期（在服务器首次启动的时候初始化为<span class="hljs-number">0</span>，单调递增）
 
+	electionTimer       *time.Timer   <span class="hljs-regexp">//</span> 发起选举的计时器
+	appendEntriesTimers []*time.Timer <span class="hljs-regexp">//</span> appendEntries的计时器，<span class="hljs-number">2</span>A中用来发心跳
+	applyTimer          *time.Timer   <span class="hljs-regexp">//</span> apply日志的计时器，<span class="hljs-number">2</span>A用不到
+	notifyApplyCh       chan struct&#123;&#125;
+	stopCh              chan struct&#123;&#125;
+	voteFor             int <span class="hljs-regexp">//</span> 当前任期内收到选票的候选者id
+	applyCh             chan ApplyMsg
+
+	logEntries  []LogEntry <span class="hljs-regexp">//</span> 日志条目;每个条目包含了用于状态机的命令，以及领导者接收到该条目时的任期（第一个索引为<span class="hljs-number">1</span>）,lastSnapshot 放到 index <span class="hljs-number">0</span>
+	commitIndex int        <span class="hljs-regexp">//</span> 已知已提交的最高的日志条目的索引（初始值为<span class="hljs-number">0</span>，单调递增）
+	lastApplied int        <span class="hljs-regexp">//</span> 已经被应用到状态机的最高的日志条目的索引（初始值为<span class="hljs-number">0</span>，单调递增）
+
+	<span class="hljs-regexp">//</span>leader需要保存的
+
+	nextIndex  []int <span class="hljs-regexp">//</span> 对于每一台服务器，发送到该服务器的下一个日志条目的索引（初始值为领导者最后的日志条目的索引+<span class="hljs-number">1</span>）
+	matchIndex []int <span class="hljs-regexp">//</span> 对于每一台服务器，已知的已经复制到该服务器的最高日志条目的索引（初始值为<span class="hljs-number">0</span>，单调递增）
+
+	lastSnapshotIndex int <span class="hljs-regexp">//</span> 快照中的 index
+	lastSnapshotTerm  int
+&#125;
+</code></pre>
+
+<h3 id="2-2-RequestVote-RPC"><a href="#2-2-RequestVote-RPC" class="headerlink" title="2.2 RequestVote RPC"></a>2.2 RequestVote RPC</h3><p><img src="/img/raft/RequestVoteRPC.png" srcset="/img/loading.gif" alt="img"></p>
+<pre><code class="hljs go"><span class="hljs-keyword">type</span> RequestVoteArgs <span class="hljs-keyword">struct</span> &#123;
+	<span class="hljs-comment">// Your data here (2A, 2B).</span>
+	Term         <span class="hljs-keyword">int</span> <span class="hljs-comment">//	候选人的任期号</span>
+	CandidateId  <span class="hljs-keyword">int</span> <span class="hljs-comment">// 请求选票的候选人的 Id</span>
+	LastLogIndex <span class="hljs-keyword">int</span> <span class="hljs-comment">// 候选人的最后日志条目的索引值</span>
+	LastLogTerm  <span class="hljs-keyword">int</span> <span class="hljs-comment">// 候选人最后日志条目的任期号</span>
+&#125;
+
+<span class="hljs-keyword">type</span> RequestVoteReply <span class="hljs-keyword">struct</span> &#123;
+	<span class="hljs-comment">// Your data here (2A).</span>
+	Term        <span class="hljs-keyword">int</span>  <span class="hljs-comment">// 当前任期号，以便于候选人去更新自己的任期号</span>
+	VoteGranted <span class="hljs-keyword">bool</span> <span class="hljs-comment">// 候选人赢得了此张选票时为真</span>
+&#125;</code></pre>
+
+<h2 id="3-逻辑实现"><a href="#3-逻辑实现" class="headerlink" title="3. 逻辑实现"></a>3. 逻辑实现</h2><h3 id="3-1-Raft初始化"><a href="#3-1-Raft初始化" class="headerlink" title="3.1. Raft初始化"></a>3.1. Raft初始化</h3><p><img src="/img/raft/ServerStateMachine.png" srcset="/img/loading.gif" alt="img"><br><img src="/img/raft/Rules.png" srcset="/img/loading.gif" alt="img"><br>每个Raft Server初始化时都是Follower状态，term为0.<br>Raft server初始化一个electionTimer计时器（时间从150ms-300ms不等），如果在计时器完成之前，收到了Candidate服务器发送的投票请求（RequestVote），或者是收到了leader发送的心跳（AppendEntries），则刷新计时器，继续维持Follower状态。<br>如果没有收到，即<strong>选举超时</strong>，则转变为Candidate，发起投票。</p>
+<pre><code class="hljs go"><span class="hljs-comment">// 初始化投票</span>
+	rf.electionTimer = time.NewTimer(randElectionTimeout())
+	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		<span class="hljs-keyword">for</span> &#123;
+			<span class="hljs-keyword">select</span> &#123;
+			<span class="hljs-keyword">case</span> &lt;-rf.stopCh:
+				<span class="hljs-keyword">return</span>
+			<span class="hljs-keyword">case</span> &lt;-rf.electionTimer.C:
+				rf.startElection()
+			&#125;
+		&#125;
+	&#125;()</code></pre>
+<h3 id="3-2-发起选举，选出Leader"><a href="#3-2-发起选举，选出Leader" class="headerlink" title="3.2. 发起选举，选出Leader"></a>3.2. 发起选举，选出Leader</h3><h3 id="3-2-1-发出选举要求"><a href="#3-2-1-发出选举要求" class="headerlink" title="3.2.1. 发出选举要求"></a>3.2.1. 发出选举要求</h3><p>要开始一次选举过程，跟随者先要增加自己的当前任期号并且转换到Candidate。然后它向集群中的其他节点发送<strong>RequestVoteArgs</strong>来给自己投票。直到以下任意发生：</p>
+<ol>
+<li>赢得选举<blockquote>
+<p>当一个候选人从整个集群的大多数服务器节点获得了针对同一个任期号的选票，那么他就赢得了这次选举并成为领导人。每一个服务器最多会对一个任期号投出一张选票，按照先来先服务的原则。要求大多数选票的规则确保了最多只会有一个候选人赢得此次选举。一旦候选人赢得选举，他就立即成为领导人。然后他会向其他的服务器发送心跳消息来建立自己的权威并且阻止新的领导人的产生。</p>
+</blockquote>
+</li>
+<li>其他Raft节点成为Leader<blockquote>
+<p>在等待投票的时候，候选人可能会从其他的服务器接收到声明它是领导人的附加日志项 RPC。如果这个领导人的任期号（包含在此次的 RPC中）不小于候选人当前的任期号，那么候选人会承认领导人合法并回到跟随者状态。 如果此次 RPC 中的任期号比自己小，那么候选人就会拒绝这次的 RPC 并且继续保持候选人状态。</p>
+</blockquote>
+</li>
+<li>No one wins<blockquote>
+<p>如果有多个跟随者同时成为候选人，那么选票可能会被瓜分以至于没有候选人可以赢得大多数人的支持。当这种情况发生的时候，每一个候选人都会超时，然后通过增加当前任期号来开始一轮新的选举。然而，没有其他机制的话，选票可能会被无限的重复瓜分。</p>
+</blockquote>
+</li>
+</ol>
+<p>Raft 算法使用随机选举超时时间的方法来确保很少会发生选票瓜分的情况，就算发生也能很快的解决。为了阻止选票起初就被瓜分，选举超时时间是从一个固定的区间（例如 150-300 毫秒）随机选择。这样可以把服务器都分散开以至于在大多数情况下只有一个服务器会选举超时；然后他赢得选举并在其他服务器超时之前发送心跳包。同样的机制被用在选票瓜分的情况下。每一个候选人在开始一次选举的时候会重置一个<strong>随机的选举超时时间</strong>，然后在超时时间内等待投票的结果；这样减少了在新的选举中另外的选票瓜分的可能性。</p>
+<h3 id="3-2-2-接收选举要求"><a href="#3-2-2-接收选举要求" class="headerlink" title="3.2.2. 接收选举要求"></a>3.2.2. 接收选举要求</h3><pre><code class="hljs go"><span class="hljs-comment">// 选举人的term小于当前服务器的term，拒绝投票</span>
+<span class="hljs-keyword">if</span> req.Term &lt; rf.currentTerm &#123;
+	<span class="hljs-keyword">return</span>
+&#125;
+<span class="hljs-comment">// 已经选举成功，拒绝投票</span>
+<span class="hljs-keyword">if</span> rf.role == Leader &#123;
+	<span class="hljs-keyword">return</span>
+&#125;
+<span class="hljs-comment">// 已经投票给当前候选人</span>
+<span class="hljs-keyword">if</span> rf.voteFor == req.CandidateId &#123;
+	reply.VoteGranted = <span class="hljs-literal">true</span>
+	<span class="hljs-keyword">return</span>
+&#125;
+<span class="hljs-comment">// 如果已经投票，且对象不是当前候选人，拒绝投票</span>
+<span class="hljs-comment">// 但如果当前服务器不是follwer，且选举人的term不小于当前服务器的term，则它会转投给选举人</span>
+<span class="hljs-keyword">if</span> rf.voteFor != voteForNobody &amp;&amp; rf.voteFor != req.CandidateId &amp;&amp; rf.role == Follower &#123;
+	<span class="hljs-keyword">return</span>
+&#125;
+<span class="hljs-comment">// 候选人最后一条日志的term小于当前服务器最后一条日志的term, 或者候选人最后一条日志的index小于当前服务器最后一条日志的index（即log记录冲突），拒绝投票</span>
+<span class="hljs-keyword">if</span> lastLogTerm &gt; req.LastLogTerm || (req.LastLogTerm == lastLogTerm &amp;&amp; req.LastLogIndex &lt; lastLogIndex) &#123;
+	<span class="hljs-keyword">return</span>
+&#125;
+
+<span class="hljs-comment">// 将自身的term调整为和候选人一致</span>
+rf.currentTerm = req.Term
+<span class="hljs-comment">// 投票给候选人</span>
+rf.voteFor = req.CandidateId
+reply.VoteGranted = <span class="hljs-literal">true</span>
+rf.changeRole(Follower)
+   <span class="hljs-comment">// 刷新计时器</span>
+rf.resetElectionTimer()
+rf.log(<span class="hljs-string">&quot;vote for:%d&quot;</span>, req.CandidateId)</code></pre>
+<h3 id="3-3-选举完成，Leader发送心跳"><a href="#3-3-选举完成，Leader发送心跳" class="headerlink" title="3.3. 选举完成，Leader发送心跳"></a>3.3. 选举完成，Leader发送心跳</h3>
             </div>
             <hr>
             <div>
@@ -665,7 +775,7 @@
         });
     }
     
-        typing("subtitle", "2020 Spring 6.824 Lab2A Raft笔记")
+        typing("subtitle", "2020 Spring 6.824 Raft Lab2A Leader Election笔记")
     
   </script>
 
