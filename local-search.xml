@@ -4,11 +4,24 @@
   
   
   <entry>
+    <title>2020 Spring 6.824 Lab2C: Raft State Persist笔记</title>
+    <link href="/2020/10/10/2020-Spring-6-824-Lab2C-Raft-State-Persist%E7%AC%94%E8%AE%B0/"/>
+    <url>/2020/10/10/2020-Spring-6-824-Lab2C-Raft-State-Persist%E7%AC%94%E8%AE%B0/</url>
+    
+    <content type="html"><![CDATA[<h1 id="2020-Spring-6-824-Lab2C-Raft-State-Persist笔记"><a href="#2020-Spring-6-824-Lab2C-Raft-State-Persist笔记" class="headerlink" title="2020 Spring 6.824 Lab2C: Raft State Persist笔记"></a>2020 Spring 6.824 Lab2C: Raft State Persist笔记</h1><h2 id="0-Raft算法基础"><a href="#0-Raft算法基础" class="headerlink" title="0. Raft算法基础"></a>0. Raft算法基础</h2><p>最好先看一遍论文原文：<a href="https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf">https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf</a></p><p>这个中文翻译很不错，我的注释代码很多都是参照里面：<a href="https://github.com/maemual/raft-zh_cn/blob/master/raft-zh_cn.md">https://github.com/maemual/raft-zh_cn/blob/master/raft-zh_cn.md</a></p><p>这个Raft可视化也不错，如果看不下论文可以先看一遍这个：<a href="http://thesecretlivesofdata.com/raft/">http://thesecretlivesofdata.com/raft/</a></p><p>本章代码地址：<a href="https://github.com/keleqnma/6.824-notes-codes/tree/master/src/raft">https://github.com/keleqnma/6.824-notes-codes/tree/master/src/raft</a></p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>2020 Spring 6.824 Lab2B: Raft Log REplication笔记</title>
     <link href="/2020/10/10/2020-Spring-6-824-Lab2B-Raft-Log-REplication%E7%AC%94%E8%AE%B0/"/>
     <url>/2020/10/10/2020-Spring-6-824-Lab2B-Raft-Log-REplication%E7%AC%94%E8%AE%B0/</url>
     
-    <content type="html"><![CDATA[<h1 id="2020-Spring-6-824-Lab2B-Raft-Log-REplication笔记"><a href="#2020-Spring-6-824-Lab2B-Raft-Log-REplication笔记" class="headerlink" title="2020 Spring 6.824 Lab2B: Raft Log REplication笔记"></a>2020 Spring 6.824 Lab2B: Raft Log REplication笔记</h1>]]></content>
+    <content type="html"><![CDATA[<h1 id="2020-Spring-6-824-Lab2B-Raft-Log-REplication笔记"><a href="#2020-Spring-6-824-Lab2B-Raft-Log-REplication笔记" class="headerlink" title="2020 Spring 6.824 Lab2B: Raft Log REplication笔记"></a>2020 Spring 6.824 Lab2B: Raft Log REplication笔记</h1><h2 id="0-Raft算法基础"><a href="#0-Raft算法基础" class="headerlink" title="0. Raft算法基础"></a>0. Raft算法基础</h2><p>最好先看一遍论文原文：<a href="https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf">https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf</a></p><p>这个中文翻译很不错，我的注释代码很多都是参照里面：<a href="https://github.com/maemual/raft-zh_cn/blob/master/raft-zh_cn.md">https://github.com/maemual/raft-zh_cn/blob/master/raft-zh_cn.md</a></p><p>这个Raft可视化也不错，如果看不下论文可以先看一遍这个：<a href="http://thesecretlivesofdata.com/raft/">http://thesecretlivesofdata.com/raft/</a></p><p>本章代码地址：<a href="https://github.com/keleqnma/6.824-notes-codes/tree/master/src/raft">https://github.com/keleqnma/6.824-notes-codes/tree/master/src/raft</a></p><h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2>]]></content>
     
     
     <categories>
