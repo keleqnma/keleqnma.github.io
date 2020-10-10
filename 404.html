@@ -328,12 +328,7 @@
         });
     }
     
-        fetch('https://v1.hitokoto.cn?c=a&c=b&c=c')
-        .then(response => response.json())
-        .then(data => {
-           typing("hitokoto", '"' + data.hitokoto + '"' + ' —— ' + '《' + data.from + '》' + '</h5>')
-        })
-        .catch(console.error)
+        typing("subtitle", "Page not found")
     
   </script>
 
