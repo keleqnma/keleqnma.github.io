@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      234 字
+      375 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      6
        分钟
     </span>
   
@@ -233,27 +233,62 @@
           </div>
 
 
-<h2 id="2-解法"><a href="#2-解法" class="headerlink" title="2. 解法"></a>2. 解法</h2><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">search</span><span class="hljs-params">(nums []<span class="hljs-keyword">int</span>, target <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">bool</span></span> &#123;
+<h2 id="2-解法"><a href="#2-解法" class="headerlink" title="2. 解法"></a>2. 解法</h2><p>使用二分法，mid的位置有三种情况：</p>
+<table>
+<thead>
+<tr>
+<th>图示</th>
+<th>大小情况</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="/img/leetcode/rightmid.png" srcset="/img/loading.gif" alt="img"></td>
+<td>nums[m]&lt;=nums[r]&lt;=nums[l]</td>
+</tr>
+<tr>
+<td><img src="/img/leetcode/leftmid.png" srcset="/img/loading.gif" alt="img"></td>
+<td>nums[mid]&lt;=nums[right]&lt;=nums[left]</td>
+</tr>
+<tr>
+<td><img src="/img/leetcode/totalSorted.png" srcset="/img/loading.gif" alt="img"></td>
+<td>nums[mid]&lt;=nums[right]&lt;=nums[left]</td>
+</tr>
+</tbody></table>
+<p>代码：</p>
+<pre><code class="hljs go"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">search</span><span class="hljs-params">(nums []<span class="hljs-keyword">int</span>, target <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">bool</span></span> &#123;
     l, r := <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
     <span class="hljs-keyword">for</span> l &lt;= r &#123;
+        <span class="hljs-keyword">for</span> l &lt; r &amp;&amp; nums[l+<span class="hljs-number">1</span>] == nums[l]&#123; <span class="hljs-comment">// 去重</span>
+            l++
+        &#125;
+        <span class="hljs-keyword">for</span> r &gt; l &amp;&amp; nums[r<span class="hljs-number">-1</span>] == nums[r]&#123; <span class="hljs-comment">// 去重</span>
+            r--
+        &#125;
         m := l + (r - l) / <span class="hljs-number">2</span>
+        fmt.Println(l,m,r)
         <span class="hljs-keyword">switch</span>&#123;
         <span class="hljs-keyword">case</span> nums[m] == target :
-                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> 
-        <span class="hljs-keyword">case</span> nums[l] &lt; nums[m] || nums[m] &gt; nums[r]:
-            <span class="hljs-keyword">if</span> target &gt; nums[m] || target &lt; nums[l] &#123;
-                l = m + <span class="hljs-number">1</span>
-            &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> 
+        <span class="hljs-keyword">case</span> nums[m] &lt;= nums[r] &amp;&amp; nums[r] &lt;= nums[l]: <span class="hljs-comment">//mid 在更小的这边</span>
+            <span class="hljs-keyword">if</span> target &lt; nums[m] || target &gt; nums[r]&#123;
                 r = m - <span class="hljs-number">1</span>
-            &#125;
-        <span class="hljs-keyword">case</span> nums[m] &lt; nums[r] || nums[m] &lt; nums[l]:
-            <span class="hljs-keyword">if</span> target &gt; nums[r] || target &lt; nums[m] &#123;
-                r = m - <span class="hljs-number">1</span>
-            &#125; <span class="hljs-keyword">else</span> &#123;
+            &#125;<span class="hljs-keyword">else</span>&#123;
                 l = m + <span class="hljs-number">1</span>
             &#125;
-        <span class="hljs-keyword">default</span>:
-            r--
+        <span class="hljs-keyword">case</span> nums[r] &lt;= nums[l] &amp;&amp; nums[l] &lt;= nums[m]: <span class="hljs-comment">//mid 在更大的这边</span>
+            <span class="hljs-keyword">if</span> target &lt; nums[m] &amp;&amp; target &gt; nums[r]&#123;
+                r = m - <span class="hljs-number">1</span>
+            &#125;<span class="hljs-keyword">else</span>&#123;
+                l = m + <span class="hljs-number">1</span>
+            &#125;
+        <span class="hljs-keyword">case</span> nums[l] &lt;= nums[m] &amp;&amp; nums[m] &lt;= nums[r]: <span class="hljs-comment">//l与r之间是顺序</span>
+            <span class="hljs-keyword">if</span> target &lt; nums[m]&#123;
+                r = m - <span class="hljs-number">1</span>
+            &#125;<span class="hljs-keyword">else</span>&#123;
+                l = m + <span class="hljs-number">1</span>
+            &#125;
         &#125;
     &#125;
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
