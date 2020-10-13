@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      375 字
+      400 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      7
        分钟
     </span>
   
@@ -238,23 +238,23 @@
 <thead>
 <tr>
 <th>图示</th>
-<th>大小情况</th>
+<th><div style="width: 260pt">指针大小情况</div></th>
 </tr>
 </thead>
 <tbody><tr>
 <td><img src="/img/leetcode/rightmid.png" srcset="/img/loading.gif" alt="img"></td>
-<td>nums[m]&lt;=nums[r]&lt;=nums[l]</td>
+<td>nums[mid] &lt;= nums[right] &lt;= nums[left]</td>
 </tr>
 <tr>
 <td><img src="/img/leetcode/leftmid.png" srcset="/img/loading.gif" alt="img"></td>
-<td>nums[mid]&lt;=nums[right]&lt;=nums[left]</td>
+<td>nums[right] &lt;= nums[left] &lt;= nums[mid]</td>
 </tr>
 <tr>
 <td><img src="/img/leetcode/totalSorted.png" srcset="/img/loading.gif" alt="img"></td>
-<td>nums[mid]&lt;=nums[right]&lt;=nums[left]</td>
+<td>nums[left] &lt;= nums[mid] &lt;= nums[right]</td>
 </tr>
 </tbody></table>
-<p>代码：</p>
+<p>再分别在这三种情况里针对target的位置进行判定就行了。<br>代码：</p>
 <pre><code class="hljs go"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
 
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">search</span><span class="hljs-params">(nums []<span class="hljs-keyword">int</span>, target <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">bool</span></span> &#123;
