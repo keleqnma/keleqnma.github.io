@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="keleqnma">
   <meta name="keywords" content="">
-  <title>每天一题 LeetCode81 Search in Rotated Sorted Array II - Yellow dog&#39;s den</title>
+  <title>每天一题 Leetcode 填充每个节点的下一个右侧节点指针 II - Yellow dog&#39;s den</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-10-13 13:40" pubdate>
-        星期二, 十月 13日 2020, 1:40 下午
+      <time datetime="2020-10-21 00:05" pubdate>
+        星期三, 十月 21日 2020, 12:05 凌晨
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      412 字
+      289 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      7
+      4
        分钟
     </span>
   
@@ -224,98 +224,71 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">每天一题 LeetCode81 Search in Rotated Sorted Array II</h1>
+            <h1 style="display: none">每天一题 Leetcode 填充每个节点的下一个右侧节点指针 II</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="每天一题-LeetCode81-Search-in-Rotated-Sorted-Array-II"><a href="#每天一题-LeetCode81-Search-in-Rotated-Sorted-Array-II" class="headerlink" title="每天一题 LeetCode81 Search in Rotated Sorted Array II"></a>每天一题 LeetCode81 Search in Rotated Sorted Array II</h1><h2 id="1-题目"><a href="#1-题目" class="headerlink" title="1. 题目"></a>1. 题目</h2><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/search-in-rotated-sorted-array-ii/">https://leetcode.com/problems/search-in-rotated-sorted-array-ii/</a></p>
-<div class="note note-primary">
-            <p>Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.</p><p>(i.e., [0,0,1,2,2,5,6] might become [2,5,6,0,0,1,2]).</p><p>You are given a target value to search. If found in the array return true, otherwise return false.</p><p>Example 1:</p><pre><code>Input: nums = [2,5,6,0,0,1,2], target = 0Output: true</code></pre><p>Example 2:</p><pre><code>Input: nums = [2,5,6,0,0,1,2], target = 3Output: falseFollow up:</code></pre><ul><li>This is a follow up problem to Search in Rotated Sorted Array, where nums may contain duplicates.</li><li>Would this affect the run-time complexity? How and why?</li></ul>
+              <h2 id="1-题目"><a href="#1-题目" class="headerlink" title="1. 题目"></a>1. 题目</h2><div class="note note-primary">
+            <p>给定一个二叉树</p><pre><code>struct Node {  int val;  Node *left;  Node *right;  Node *next;}</code></pre><p>填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。</p><p>初始状态下，所有 next 指针都被设置为 NULL。</p><p>进阶：</p><p>你只能使用常量级额外空间。<br>使用递归解题也符合要求，本题中递归程序占用的栈空间不算做额外的空间复杂度。</p>
           </div>
+<h2 id="2-解法"><a href="#2-解法" class="headerlink" title="2. 解法"></a>2. 解法</h2><pre><code class="hljs go"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Definition for a Node.</span>
+<span class="hljs-comment"> * type Node struct &#123;</span>
+<span class="hljs-comment"> *     Val int</span>
+<span class="hljs-comment"> *     Left *Node</span>
+<span class="hljs-comment"> *     Right *Node</span>
+<span class="hljs-comment"> *     Next *Node</span>
+<span class="hljs-comment"> * &#125;</span>
+<span class="hljs-comment"> */</span>
 
-
-<h2 id="2-解法"><a href="#2-解法" class="headerlink" title="2. 解法"></a>2. 解法</h2><p>使用二分法，mid的位置有三种情况（google绘图，很丑，大概懂意思就行）：</p>
-<table>
-<thead>
-<tr>
-<th>图示</th>
-<th><div style="width: 260pt">指针大小情况</div></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><img src="/img/leetcode/rightmid.png" srcset="/img/loading.gif" alt="img"></td>
-<td>nums[mid] &lt;= nums[right] &lt;= nums[left]</td>
-</tr>
-<tr>
-<td><img src="/img/leetcode/leftmid.png" srcset="/img/loading.gif" alt="img"></td>
-<td>nums[right] &lt;= nums[left] &lt;= nums[mid]</td>
-</tr>
-<tr>
-<td><img src="/img/leetcode/totalSorted.png" srcset="/img/loading.gif" alt="img"></td>
-<td>nums[left] &lt;= nums[mid] &lt;= nums[right]</td>
-</tr>
-</tbody></table>
-<p>再分别在这三种情况里针对target的位置进行判定就行了。<br>代码：</p>
-<pre><code class="hljs go"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">search</span><span class="hljs-params">(nums []<span class="hljs-keyword">int</span>, target <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">bool</span></span> &#123;
-    l, r := <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
-    <span class="hljs-keyword">for</span> l &lt;= r &#123;
-        <span class="hljs-keyword">for</span> l &lt; r &amp;&amp; nums[l+<span class="hljs-number">1</span>] == nums[l]&#123; <span class="hljs-comment">// 去重</span>
-            l++
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">connect</span><span class="hljs-params">(root *Node)</span> *<span class="hljs-title">Node</span></span> &#123;
+    <span class="hljs-keyword">if</span> root == <span class="hljs-literal">nil</span> &#123;
+        <span class="hljs-keyword">return</span> root
+    &#125;   
+    
+    <span class="hljs-keyword">for</span> leftNode:= root;leftNode!=<span class="hljs-literal">nil</span>;&#123;
+        <span class="hljs-keyword">var</span> firstChild *Node
+        <span class="hljs-keyword">for</span> curNode := leftNode;curNode != <span class="hljs-literal">nil</span>;curNode = curNode.Next&#123;
+            <span class="hljs-keyword">if</span> curNode.Left != <span class="hljs-literal">nil</span>&#123;
+                <span class="hljs-keyword">if</span> curNode.Right != <span class="hljs-literal">nil</span>&#123;
+                    curNode.Left.Next=curNode.Right;
+                &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> curNode.Next != <span class="hljs-literal">nil</span> &#123;
+                    curNode.Left.Next=findLeftestNode(curNode.Next)
+                &#125;
+                <span class="hljs-keyword">if</span> firstChild == <span class="hljs-literal">nil</span>&#123;
+                    firstChild = curNode.Left
+                &#125;
+            &#125;
+            <span class="hljs-keyword">if</span> curNode.Right != <span class="hljs-literal">nil</span> &#123;
+                <span class="hljs-keyword">if</span> curNode.Next != <span class="hljs-literal">nil</span>&#123; 
+                    curNode.Right.Next = findLeftestNode(curNode.Next)
+                &#125;
+                <span class="hljs-keyword">if</span> firstChild == <span class="hljs-literal">nil</span>&#123;
+                    firstChild = curNode.Right
+                &#125;
+            &#125;
         &#125;
-        <span class="hljs-keyword">for</span> r &gt; l &amp;&amp; nums[r<span class="hljs-number">-1</span>] == nums[r]&#123; <span class="hljs-comment">// 去重</span>
-            r--
+        leftNode = firstChild
+    &#125;
+
+	<span class="hljs-keyword">return</span> root
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">findLeftestNode</span><span class="hljs-params">(root *Node)</span> *<span class="hljs-title">Node</span></span>&#123;
+    <span class="hljs-keyword">for</span> curNode:= root; curNode != <span class="hljs-literal">nil</span> ;curNode = curNode.Next&#123;
+        <span class="hljs-keyword">if</span> curNode.Left != <span class="hljs-literal">nil</span>&#123;
+            <span class="hljs-keyword">return</span> curNode.Left
         &#125;
-        m := l + (r - l) / <span class="hljs-number">2</span>
-        fmt.Println(l,m,r)
-        <span class="hljs-keyword">switch</span>&#123;
-        <span class="hljs-keyword">case</span> nums[m] == target :
-            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> 
-        <span class="hljs-keyword">case</span> nums[m] &lt;= nums[r] &amp;&amp; nums[r] &lt;= nums[l]: <span class="hljs-comment">//mid 在更小的这边</span>
-            <span class="hljs-keyword">if</span> target &lt; nums[m] || target &gt; nums[r]&#123;
-                r = m - <span class="hljs-number">1</span>
-            &#125;<span class="hljs-keyword">else</span>&#123;
-                l = m + <span class="hljs-number">1</span>
-            &#125;
-        <span class="hljs-keyword">case</span> nums[r] &lt;= nums[l] &amp;&amp; nums[l] &lt;= nums[m]: <span class="hljs-comment">//mid 在更大的这边</span>
-            <span class="hljs-keyword">if</span> target &lt; nums[m] &amp;&amp; target &gt; nums[r]&#123;
-                r = m - <span class="hljs-number">1</span>
-            &#125;<span class="hljs-keyword">else</span>&#123;
-                l = m + <span class="hljs-number">1</span>
-            &#125;
-        <span class="hljs-keyword">case</span> nums[l] &lt;= nums[m] &amp;&amp; nums[m] &lt;= nums[r]: <span class="hljs-comment">//l与r之间是顺序</span>
-            <span class="hljs-keyword">if</span> target &lt; nums[m]&#123;
-                r = m - <span class="hljs-number">1</span>
-            &#125;<span class="hljs-keyword">else</span>&#123;
-                l = m + <span class="hljs-number">1</span>
-            &#125;
+        <span class="hljs-keyword">if</span> curNode.Right != <span class="hljs-literal">nil</span>&#123;
+            <span class="hljs-keyword">return</span> curNode.Right
         &#125;
     &#125;
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
 &#125;</code></pre>
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                    
-                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/LeetCode/">LeetCode</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%88%86/">二分</a>
-                    
-                  </div>
                 
               </div>
               
@@ -326,18 +299,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/10/21/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-%E5%A1%AB%E5%85%85%E8%8A%82%E7%82%B9/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">每天一题 Leetcode 填充每个节点的下一个右侧节点指针 II</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/10/10/2020-Spring-6-824-Lab2C-Raft-State-Persist%E7%AC%94%E8%AE%B0/">
-                        <span class="hidden-mobile">2020 Spring 6.824 Lab2C: Raft State Persist笔记</span>
+                      <a href="/2020/10/13/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-LeetCode81-Search-in-Rotated-Sorted-Array-II/">
+                        <span class="hidden-mobile">每天一题 LeetCode81 Search in Rotated Sorted Array II</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -356,8 +323,8 @@
     <div id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://example.com/2020/10/13/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-LeetCode81-Search-in-Rotated-Sorted-Array-II/';
-        this.page.identifier = '/2020/10/13/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-LeetCode81-Search-in-Rotated-Sorted-Array-II/';
+        this.page.url = 'http://example.com/2020/10/21/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-%E5%A1%AB%E5%85%85%E8%8A%82%E7%82%B9/';
+        this.page.identifier = '/2020/10/21/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-%E5%A1%AB%E5%85%85%E8%8A%82%E7%82%B9/';
       };
       function loadDisqus() {
         (function () {
@@ -576,7 +543,7 @@
         });
     }
     
-        typing("subtitle", "每天一题 LeetCode81 Search in Rotated Sorted Array II")
+        typing("subtitle", "每天一题 Leetcode 填充每个节点的下一个右侧节点指针 II")
     
   </script>
 
