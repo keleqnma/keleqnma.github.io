@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      289 字
+      485 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      6
        分钟
     </span>
   
@@ -230,7 +230,18 @@
               <h2 id="1-题目"><a href="#1-题目" class="headerlink" title="1. 题目"></a>1. 题目</h2><div class="note note-primary">
             <p>给定一个二叉树</p><pre><code>struct Node {  int val;  Node *left;  Node *right;  Node *next;}</code></pre><p>填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。</p><p>初始状态下，所有 next 指针都被设置为 NULL。</p><p>进阶：</p><p>你只能使用常量级额外空间。<br>使用递归解题也符合要求，本题中递归程序占用的栈空间不算做额外的空间复杂度。</p>
           </div>
-<h2 id="2-解法"><a href="#2-解法" class="headerlink" title="2. 解法"></a>2. 解法</h2><pre><code class="hljs go"><span class="hljs-comment">/**</span>
+<h2 id="2-解法"><a href="#2-解法" class="headerlink" title="2. 解法"></a>2. 解法</h2><p>现在网上的解法是适用于完全二叉树（原题是完全二叉树）的，但是对于普通二叉树，就不实用了。把握住两个点：</p>
+<ol>
+<li>利用next节点可以在二叉树的同一级内自由跳转。</li>
+<li>需要找到同一级内离你最近的右侧节点。</li>
+</ol>
+<p>很明显可以用BFS来做，将代码修改一下加一个BFS逻辑就可以了（不是典型BFS代码的样式，没有队列，但是思想是BFS，分层遍历）。</p>
+<ol>
+<li>利用next节点从左向右遍历当前节点的层次，帮当前节点的下一层节点找到他们的next节点。</li>
+<li>用一个变量记下下一个节点的最左节点。</li>
+<li>再遍历下一层，循环往复。</li>
+</ol>
+<pre><code class="hljs go"><span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * Definition for a Node.</span>
 <span class="hljs-comment"> * type Node struct &#123;</span>
 <span class="hljs-comment"> *     Val int</span>
