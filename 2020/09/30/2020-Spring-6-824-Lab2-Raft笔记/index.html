@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.1k 字
+      4.2k 字
     </span>
   
 
@@ -465,19 +465,17 @@
 	VoteGranted <span class="hljs-keyword">bool</span> <span class="hljs-comment">// 候选人赢得了此张选票时为真</span>
 &#125;</code></pre>
 
-<h2 id="3-逻辑实现"><a href="#3-逻辑实现" class="headerlink" title="3. 逻辑实现"></a>3. 逻辑实现</h2><h3 id="3-1-Raft初始化"><a href="#3-1-Raft初始化" class="headerlink" title="3.1. Raft初始化"></a>3.1. Raft初始化</h3><p><img src="/img/raft/ServerStateMachine.png" srcset="/img/loading.gif" alt="img"><br><img src="/img/raft/Rules.png" srcset="/img/loading.gif" alt="img"><br>每个Raft Server初始化时都是Follower状态，term为0.<br>Raft server初始化一个electionTimer计时器（时间从150ms-300ms不等），如果在计时器完成之前，收到了Candidate服务器发送的投票请求（RequestVote），或者是收到了leader发送的心跳（AppendEntries），则刷新计时器，继续维持Follower状态。<br>如果没有收到，即<strong>选举超时</strong>，则转变为Candidate，发起投票。</p>
-<pre><code class="hljs go"><span class="hljs-comment">// 初始化投票</span>
-	rf.electionTimer = time.NewTimer(randElectionTimeout())
-	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
-		<span class="hljs-keyword">for</span> &#123;
-			<span class="hljs-keyword">select</span> &#123;
-			<span class="hljs-keyword">case</span> &lt;-rf.stopCh:
-				<span class="hljs-keyword">return</span>
-			<span class="hljs-keyword">case</span> &lt;-rf.electionTimer.C:
-				rf.startElection()
-			&#125;
+<h2 id="3-逻辑实现"><a href="#3-逻辑实现" class="headerlink" title="3. 逻辑实现"></a>3. 逻辑实现</h2><h3 id="3-1-Raft初始化"><a href="#3-1-Raft初始化" class="headerlink" title="3.1. Raft初始化"></a>3.1. Raft初始化</h3><p><img src="/img/raft/ServerStateMachine.png" srcset="/img/loading.gif" alt="img"><br><img src="/img/raft/Rules.png" srcset="/img/loading.gif" alt="img"><br>每个Raft Server初始化时都是Follower状态，term为0.<br>Raft server初始化一个electionTimer计时器（时间从150ms-300ms不等），如果在计时器完成之前，收到了Candidate服务器发送的投票请求（RequestVote），或者是收到了leader发送的心跳（AppendEntries），则刷新计时器，继续维持Follower状态。<br>如果没有收到，即<strong>选举超时</strong>，则转变为Candidate，发起投票。<br>这里和大多数人一样，将选举计时行为封装为一个loop（raft共有三个loop，electionLoop，appendEntriesLoop，applyLogLoop，这三个时间都是由超时驱动的）。</p>
+<pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(rf *Raft)</span> <span class="hljs-title">electionLoop</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">for</span> &#123;
+		<span class="hljs-keyword">select</span> &#123;
+		<span class="hljs-keyword">case</span> &lt;-rf.stopCh:
+			<span class="hljs-keyword">return</span>
+		<span class="hljs-keyword">case</span> &lt;-rf.electionTimer.C:
+			rf.startElection()
 		&#125;
-	&#125;()</code></pre>
+	&#125;
+&#125;</code></pre>
 <h3 id="3-2-发起选举，选出Leader"><a href="#3-2-发起选举，选出Leader" class="headerlink" title="3.2. 发起选举，选出Leader"></a>3.2. 发起选举，选出Leader</h3><h4 id="3-2-1-发出选举要求"><a href="#3-2-1-发出选举要求" class="headerlink" title="3.2.1. 发出选举要求"></a>3.2.1. 发出选举要求</h4><p>要开始一次选举过程，跟随者先要增加自己的当前任期号并且转换到Candidate。然后它向集群中的其他节点发送<strong>RequestVoteArgs</strong>来给自己投票。直到以下任意发生：</p>
 <ol>
 <li>赢得选举<blockquote>
