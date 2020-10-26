@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.3k 字
+      1.4k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      14
        分钟
     </span>
   
@@ -227,7 +227,10 @@
             <h1 style="display: none">TCP详解笔记</h1>
             
             <div class="markdown-body" id="post-body">
-              <h2 id="0-总述"><a href="#0-总述" class="headerlink" title="0. 总述"></a>0. 总述</h2><p>TCP发展到今天已经是非常成熟的协议了，作为<strong>传输层（Tranport Layer）</strong>协议，可供跨任意网络可靠地传输数据。以TCP端口的形式为应用程序提供传输层寻址（transport-layer addressing），并用这些端口在机器之间建立连接。一旦建立了连接，就可以在两个设备之间<strong>双向</strong>传递数据。应用程序可以将数据作为简单的字节流发送到TCP端口，而TCP协议负责将数据打包为IP报文发送。接收设备的TCP实现将过程逆转，将最初发送的数据流传递给应用程序。</p>
+              <p>TCP协议详解，重传机制，RTT算法，滑动窗口，拥塞控制等。</p>
+<a id="more"></a>
+
+<h2 id="0-总述"><a href="#0-总述" class="headerlink" title="0. 总述"></a>0. 总述</h2><p>TCP发展到今天已经是非常成熟的协议了，作为<strong>传输层（Tranport Layer）</strong>协议，可供跨任意网络可靠地传输数据。以TCP端口的形式为应用程序提供传输层寻址（transport-layer addressing），并用这些端口在机器之间建立连接。一旦建立了连接，就可以在两个设备之间<strong>双向</strong>传递数据。应用程序可以将数据作为简单的字节流发送到TCP端口，而TCP协议负责将数据打包为IP报文发送。接收设备的TCP实现将过程逆转，将最初发送的数据流传递给应用程序。</p>
 <p>TCP包含很多机制，以确保数据的可靠性，一致性和及时性。这其中关键是<strong>滑动窗口</strong>，该机制要求每个设备追踪已发送的数据（即要求收到ACK），并确认接收到的数据（收到数据后会发送ACK）。未确认的数据会自动重传，并且可以根据设备和连接的需要调整系统的参数。该系统还提供了设备之间的缓冲和流控制功能，以处理不均匀的数据传输速率和其他问题。</p>
 <p>TCP可以最大程度地满足几乎所有需要<strong>面向连接（connection-oriented）</strong>的<strong>可靠</strong>数据传递需要。这是TCP的主要目标，因为这意味着高层应用程序不必单独提供这些通用功能。 TCP是最广泛使用的TCP / IP传输协议，大多数应用程序都采用TCP。</p>
 <div class="note note-success">
