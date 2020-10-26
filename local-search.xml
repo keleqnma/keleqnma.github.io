@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>2020年的技术向Flag</title>
+    <link href="/2020/10/26/2020%E7%9A%84Flag/"/>
+    <url>/2020/10/26/2020%E7%9A%84Flag/</url>
+    
+    <content type="html"><![CDATA[<p>2020还剩两个月，给自己立几个Flag吧。</p><ol><li><p>（优先级：高）6.824 的lab3做完并且写完实现笔记。</p></li><li><p>（优先级：高）继续优化CocoCache，优化GC开销。</p></li><li><p>（优先级：中）业务驱动的需求：用Go实现一个时间轮算法，参考实现：<a href="https://github.com/rfyiamcool/go-ringtimer%EF%BC%8C">https://github.com/rfyiamcool/go-ringtimer，</a>  <a href="https://github.com/wuYin/timewheel%E3%80%82">https://github.com/wuYin/timewheel。</a></p></li><li><p>（优先级：低）模仿Gin写一个web框架。</p></li></ol>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>每天一题 Leetcode 填充每个节点的下一个右侧节点指针 II</title>
     <link href="/2020/10/21/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-%E5%A1%AB%E5%85%85%E8%8A%82%E7%82%B9/"/>
     <url>/2020/10/21/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-%E5%A1%AB%E5%85%85%E8%8A%82%E7%82%B9/</url>

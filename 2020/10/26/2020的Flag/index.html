@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="keleqnma">
   <meta name="keywords" content="">
-  <title>每天一题 Leetcode 填充每个节点的下一个右侧节点指针 II - Yellow dog&#39;s den</title>
+  <title>2020年的技术向Flag - Yellow dog&#39;s den</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-10-21 00:05" pubdate>
-        星期三, 十月 21日 2020, 12:05 凌晨
+      <time datetime="2020-10-26 10:54" pubdate>
+        星期一, 十月 26日 2020, 10:54 上午
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      485 字
+      95 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      1
        分钟
     </span>
   
@@ -224,77 +224,21 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">每天一题 Leetcode 填充每个节点的下一个右侧节点指针 II</h1>
+            <h1 style="display: none">2020年的技术向Flag</h1>
             
             <div class="markdown-body" id="post-body">
-              <h2 id="1-题目"><a href="#1-题目" class="headerlink" title="1. 题目"></a>1. 题目</h2><div class="note note-primary">
-            <p>给定一个二叉树</p><pre><code>struct Node {  int val;  Node *left;  Node *right;  Node *next;}</code></pre><p>填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。</p><p>初始状态下，所有 next 指针都被设置为 NULL。</p><p>进阶：</p><p>你只能使用常量级额外空间。<br>使用递归解题也符合要求，本题中递归程序占用的栈空间不算做额外的空间复杂度。</p>
-          </div>
-<h2 id="2-解法"><a href="#2-解法" class="headerlink" title="2. 解法"></a>2. 解法</h2><p>现在网上的解法是适用于完全二叉树（原题是完全二叉树）的，但是对于普通二叉树，就不实用了。把握住两个点：</p>
+              <p>2020还剩两个月，给自己立几个Flag吧。</p>
 <ol>
-<li>利用next节点可以在二叉树的同一级内自由跳转。</li>
-<li>需要找到同一级内离你最近的右侧节点。</li>
+<li><p>（优先级：高）6.824 的lab3做完并且写完实现笔记。</p>
+</li>
+<li><p>（优先级：高）继续优化CocoCache，优化GC开销。</p>
+</li>
+<li><p>（优先级：中）业务驱动的需求：用Go实现一个时间轮算法，参考实现：<a target="_blank" rel="noopener" href="https://github.com/rfyiamcool/go-ringtimer%EF%BC%8C">https://github.com/rfyiamcool/go-ringtimer，</a>  <a target="_blank" rel="noopener" href="https://github.com/wuYin/timewheel%E3%80%82">https://github.com/wuYin/timewheel。</a></p>
+</li>
+<li><p>（优先级：低）模仿Gin写一个web框架。</p>
+</li>
 </ol>
-<p>很明显可以用BFS来做，将代码修改一下加一个BFS逻辑就可以了（不是典型BFS代码的样式，没有队列，但是思想是BFS，分层遍历）。</p>
-<ol>
-<li>利用next节点从左向右遍历当前节点的层次，帮当前节点的下一层节点找到他们的next节点。</li>
-<li>用一个变量记下下一个节点的最左节点。</li>
-<li>再遍历下一层，循环往复。</li>
-</ol>
-<pre><code class="hljs go"><span class="hljs-comment">/**</span>
-<span class="hljs-comment"> * Definition for a Node.</span>
-<span class="hljs-comment"> * type Node struct &#123;</span>
-<span class="hljs-comment"> *     Val int</span>
-<span class="hljs-comment"> *     Left *Node</span>
-<span class="hljs-comment"> *     Right *Node</span>
-<span class="hljs-comment"> *     Next *Node</span>
-<span class="hljs-comment"> * &#125;</span>
-<span class="hljs-comment"> */</span>
 
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">connect</span><span class="hljs-params">(root *Node)</span> *<span class="hljs-title">Node</span></span> &#123;
-    <span class="hljs-keyword">if</span> root == <span class="hljs-literal">nil</span> &#123;
-        <span class="hljs-keyword">return</span> root
-    &#125;   
-    
-    <span class="hljs-keyword">for</span> leftNode:= root;leftNode!=<span class="hljs-literal">nil</span>;&#123;
-        <span class="hljs-keyword">var</span> firstChild *Node
-        <span class="hljs-keyword">for</span> curNode := leftNode;curNode != <span class="hljs-literal">nil</span>;curNode = curNode.Next&#123;
-            <span class="hljs-keyword">if</span> curNode.Left != <span class="hljs-literal">nil</span>&#123;
-                <span class="hljs-keyword">if</span> curNode.Right != <span class="hljs-literal">nil</span>&#123;
-                    curNode.Left.Next=curNode.Right;
-                &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> curNode.Next != <span class="hljs-literal">nil</span> &#123;
-                    curNode.Left.Next=findLeftestNode(curNode.Next)
-                &#125;
-                <span class="hljs-keyword">if</span> firstChild == <span class="hljs-literal">nil</span>&#123;
-                    firstChild = curNode.Left
-                &#125;
-            &#125;
-            <span class="hljs-keyword">if</span> curNode.Right != <span class="hljs-literal">nil</span> &#123;
-                <span class="hljs-keyword">if</span> curNode.Next != <span class="hljs-literal">nil</span>&#123; 
-                    curNode.Right.Next = findLeftestNode(curNode.Next)
-                &#125;
-                <span class="hljs-keyword">if</span> firstChild == <span class="hljs-literal">nil</span>&#123;
-                    firstChild = curNode.Right
-                &#125;
-            &#125;
-        &#125;
-        leftNode = firstChild
-    &#125;
-
-	<span class="hljs-keyword">return</span> root
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">findLeftestNode</span><span class="hljs-params">(root *Node)</span> *<span class="hljs-title">Node</span></span>&#123;
-    <span class="hljs-keyword">for</span> curNode:= root; curNode != <span class="hljs-literal">nil</span> ;curNode = curNode.Next&#123;
-        <span class="hljs-keyword">if</span> curNode.Left != <span class="hljs-literal">nil</span>&#123;
-            <span class="hljs-keyword">return</span> curNode.Left
-        &#125;
-        <span class="hljs-keyword">if</span> curNode.Right != <span class="hljs-literal">nil</span>&#123;
-            <span class="hljs-keyword">return</span> curNode.Right
-        &#125;
-    &#125;
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
-&#125;</code></pre>
             </div>
             <hr>
             <div>
@@ -310,18 +254,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/10/26/2020%E7%9A%84Flag/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">2020年的技术向Flag</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/10/13/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-LeetCode81-Search-in-Rotated-Sorted-Array-II/">
-                        <span class="hidden-mobile">每天一题 LeetCode81 Search in Rotated Sorted Array II</span>
+                      <a href="/2020/10/21/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-%E5%A1%AB%E5%85%85%E8%8A%82%E7%82%B9/">
+                        <span class="hidden-mobile">每天一题 Leetcode 填充每个节点的下一个右侧节点指针 II</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -340,8 +278,8 @@
     <div id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://example.com/2020/10/21/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-%E5%A1%AB%E5%85%85%E8%8A%82%E7%82%B9/';
-        this.page.identifier = '/2020/10/21/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-%E5%A1%AB%E5%85%85%E8%8A%82%E7%82%B9/';
+        this.page.url = 'http://example.com/2020/10/26/2020%E7%9A%84Flag/';
+        this.page.identifier = '/2020/10/26/2020%E7%9A%84Flag/';
       };
       function loadDisqus() {
         (function () {
@@ -560,7 +498,7 @@
         });
     }
     
-        typing("subtitle", "每天一题 Leetcode 填充每个节点的下一个右侧节点指针 II")
+        typing("subtitle", "2020年的技术向Flag")
     
   </script>
 
