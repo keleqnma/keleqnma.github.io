@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="keleqnma">
   <meta name="keywords" content="">
-  <title>从0实现Golang高性能定时器 - Yellow dog&#39;s den</title>
+  <title>每天一题 Leetcode 166. Fraction to Recurring Decimal - Yellow dog&#39;s den</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-10-26 18:51" pubdate>
-        星期一, 十月 26日 2020, 6:51 晚上
+      <time datetime="2020-10-28 23:09" pubdate>
+        星期三, 十月 28日 2020, 11:09 晚上
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      168 字
+      290 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      5
        分钟
     </span>
   
@@ -224,48 +224,61 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">从0实现Golang高性能定时器</h1>
+            <h1 style="display: none">每天一题 Leetcode 166. Fraction to Recurring Decimal</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>现在在做的业务有大量循环定期任务，目前用的是小根堆+定期check，前几天面试，面试官建议可以用时间轮，但是golang还没有我特别喜欢的实现，所以决定自己写（zao）一（lun）个（zi）。</p>
-<p>希望的feature：</p>
-<ol>
-<li>自定义时间粒度。</li>
-<li>支持一次性定时，周期性定时。</li>
-<li><strong>高性能</strong>。</li>
-<li>支持传函数参数。（个人需求）</li>
-<li>支持sleep。</li>
-</ol>
-<h2 id="预备资料"><a href="#预备资料" class="headerlink" title="预备资料"></a>预备资料</h2><table>
-<thead>
-<tr>
-<th>定时器库</th>
-<th>实现原理</th>
-<th>优化点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Go1.13 timer</td>
-<td>64个time bucket，每个都是一个最小四叉堆（即小根堆）。</td>
-<td>分桶，四叉堆对缓存更友好。</td>
-</tr>
-<tr>
-<td>Go1.14 timer</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Netty</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>kafka</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="总体结构"><a href="#总体结构" class="headerlink" title="总体结构"></a>总体结构</h2><h2 id="逻辑"><a href="#逻辑" class="headerlink" title="逻辑"></a>逻辑</h2><h2 id="benchmark"><a href="#benchmark" class="headerlink" title="benchmark"></a>benchmark</h2>
+              <p>利用哈希表找重复情况，注意corner case。</p>
+<a id="more"></a>
+
+<h1 id="每天一题-Leetcode-166-Fraction-to-Recurring-Decimal"><a href="#每天一题-Leetcode-166-Fraction-to-Recurring-Decimal" class="headerlink" title="每天一题 Leetcode 166. Fraction to Recurring Decimal"></a>每天一题 Leetcode 166. Fraction to Recurring Decimal</h1><h2 id="1-题目"><a href="#1-题目" class="headerlink" title="1. 题目"></a>1. 题目</h2><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/fraction-to-recurring-decimal/">https://leetcode.com/problems/fraction-to-recurring-decimal/</a></p>
+<div class="note note-primary">
+            <p>Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.</p><p>If the fractional part is repeating, enclose the repeating part in parentheses.</p><p>If multiple answers are possible, return any of them.</p><p>It is guaranteed that the length of the answer string is less than 104 for all the given inputs.</p><pre><code>Example 1:Input: numerator = 1, denominator = 2Output: &quot;0.5&quot;Example 2:Input: numerator = 2, denominator = 1Output: &quot;2&quot;Example 3:Input: numerator = 2, denominator = 3Output: &quot;0.(6)&quot;Example 4:Input: numerator = 4, denominator = 333Output: &quot;0.(012)&quot;Example 5:Input: numerator = 1, denominator = 5Output: &quot;0.2&quot;</code></pre><p>Constraints:</p><ul><li><p>-231 &lt;= numerator, denominator &lt;= 231 - 1</p></li><li><p>denominator != 0 </p></li></ul>
+          </div>
+
+
+<h2 id="2-解法"><a href="#2-解法" class="headerlink" title="2. 解法"></a>2. 解法</h2><p>代码：</p>
+<pre><code class="hljs go"><span class="hljs-keyword">import</span>(
+    <span class="hljs-string">&quot;strconv&quot;</span>
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">abs</span><span class="hljs-params">(n <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">int</span></span> &#123;
+    <span class="hljs-keyword">if</span> n &gt; <span class="hljs-number">0</span> &#123;
+        <span class="hljs-keyword">return</span> n
+    &#125;
+    <span class="hljs-keyword">return</span> -n
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">fractionToDecimal</span><span class="hljs-params">(numerator <span class="hljs-keyword">int</span>, denominator <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">string</span></span> &#123;
+    <span class="hljs-keyword">var</span> res <span class="hljs-keyword">string</span>
+    <span class="hljs-keyword">if</span> ((numerator &gt; <span class="hljs-number">0</span>) &amp;&amp; (denominator &lt; <span class="hljs-number">0</span>)) || ((numerator &lt; <span class="hljs-number">0</span>) &amp;&amp; (denominator &gt; <span class="hljs-number">0</span>))&#123;
+        res += <span class="hljs-string">&quot;-&quot;</span>
+    &#125;
+    
+    num := abs(numerator)
+    den := abs(denominator)
+    res += strconv.Itoa(num/den)
+    num %= den
+    <span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>&#123;
+        <span class="hljs-keyword">return</span> res
+    &#125;
+    
+    res += <span class="hljs-string">&quot;.&quot;</span>
+    numMap := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">int</span>]<span class="hljs-keyword">int</span>)
+    numMap[num] = <span class="hljs-built_in">len</span>(res)
+    <span class="hljs-keyword">for</span> num != <span class="hljs-number">0</span> &#123;
+        num *= <span class="hljs-number">10</span>
+        res += strconv.Itoa(num/den)
+        num %= den
+        <span class="hljs-keyword">if</span> index, ok := numMap[num];ok&#123;
+            res = res[:index] + <span class="hljs-string">&quot;(&quot;</span> + res[index:] + <span class="hljs-string">&quot;)&quot;</span>
+            <span class="hljs-keyword">break</span>
+        &#125;<span class="hljs-keyword">else</span>&#123;
+            numMap[num] = <span class="hljs-built_in">len</span>(res)
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> res
+&#125;</code></pre>
             </div>
             <hr>
             <div>
@@ -281,18 +294,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/10/28/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-Leetcode-166-Fraction-to-Recurring-Decimal/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">每天一题 Leetcode 166. Fraction to Recurring Decimal</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/10/26/2020%E7%9A%84Flag/">
-                        <span class="hidden-mobile">2020年的技术向Flag</span>
+                      <a href="/2020/10/26/%E4%BB%8E0%E5%AE%9E%E7%8E%B0Golang%E9%AB%98%E6%80%A7%E8%83%BD%E5%AE%9A%E6%97%B6%E5%99%A8/">
+                        <span class="hidden-mobile">从0实现Golang高性能定时器</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -311,8 +318,8 @@
     <div id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://example.com/2020/10/26/%E4%BB%8E0%E5%AE%9E%E7%8E%B0Golang%E9%AB%98%E6%80%A7%E8%83%BD%E5%AE%9A%E6%97%B6%E5%99%A8/';
-        this.page.identifier = '/2020/10/26/%E4%BB%8E0%E5%AE%9E%E7%8E%B0Golang%E9%AB%98%E6%80%A7%E8%83%BD%E5%AE%9A%E6%97%B6%E5%99%A8/';
+        this.page.url = 'http://example.com/2020/10/28/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-Leetcode-166-Fraction-to-Recurring-Decimal/';
+        this.page.identifier = '/2020/10/28/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-Leetcode-166-Fraction-to-Recurring-Decimal/';
       };
       function loadDisqus() {
         (function () {
@@ -531,7 +538,7 @@
         });
     }
     
-        typing("subtitle", "从0实现Golang高性能定时器")
+        typing("subtitle", "每天一题 Leetcode 166. Fraction to Recurring Decimal")
     
   </script>
 
