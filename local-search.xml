@@ -11,6 +11,22 @@
     <content type="html"><![CDATA[<p>利用哈希表找重复情况，注意corner case。</p><a id="more"></a><h1 id="每天一题-Leetcode-166-Fraction-to-Recurring-Decimal"><a href="#每天一题-Leetcode-166-Fraction-to-Recurring-Decimal" class="headerlink" title="每天一题 Leetcode 166. Fraction to Recurring Decimal"></a>每天一题 Leetcode 166. Fraction to Recurring Decimal</h1><h2 id="1-题目"><a href="#1-题目" class="headerlink" title="1. 题目"></a>1. 题目</h2><p><a href="https://leetcode.com/problems/fraction-to-recurring-decimal/">https://leetcode.com/problems/fraction-to-recurring-decimal/</a></p><div class="note note-primary">            <p>Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.</p><p>If the fractional part is repeating, enclose the repeating part in parentheses.</p><p>If multiple answers are possible, return any of them.</p><p>It is guaranteed that the length of the answer string is less than 104 for all the given inputs.</p><pre><code>Example 1:Input: numerator = 1, denominator = 2Output: &quot;0.5&quot;Example 2:Input: numerator = 2, denominator = 1Output: &quot;2&quot;Example 3:Input: numerator = 2, denominator = 3Output: &quot;0.(6)&quot;Example 4:Input: numerator = 4, denominator = 333Output: &quot;0.(012)&quot;Example 5:Input: numerator = 1, denominator = 5Output: &quot;0.2&quot;</code></pre><p>Constraints:</p><ul><li><p>-231 &lt;= numerator, denominator &lt;= 231 - 1</p></li><li><p>denominator != 0 </p></li></ul>          </div><h2 id="2-解法"><a href="#2-解法" class="headerlink" title="2. 解法"></a>2. 解法</h2><p>代码：</p><pre><code class="hljs go"><span class="hljs-keyword">import</span>(    <span class="hljs-string">&quot;strconv&quot;</span>    <span class="hljs-string">&quot;fmt&quot;</span>)<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">abs</span><span class="hljs-params">(n <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">int</span></span> &#123;    <span class="hljs-keyword">if</span> n &gt; <span class="hljs-number">0</span> &#123;        <span class="hljs-keyword">return</span> n    &#125;    <span class="hljs-keyword">return</span> -n&#125;<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">fractionToDecimal</span><span class="hljs-params">(numerator <span class="hljs-keyword">int</span>, denominator <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">string</span></span> &#123;    <span class="hljs-keyword">var</span> res <span class="hljs-keyword">string</span>    <span class="hljs-keyword">if</span> ((numerator &gt; <span class="hljs-number">0</span>) &amp;&amp; (denominator &lt; <span class="hljs-number">0</span>)) || ((numerator &lt; <span class="hljs-number">0</span>) &amp;&amp; (denominator &gt; <span class="hljs-number">0</span>))&#123;        res += <span class="hljs-string">&quot;-&quot;</span>    &#125;        num := abs(numerator)    den := abs(denominator)    res += strconv.Itoa(num/den)    num %= den    <span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>&#123;        <span class="hljs-keyword">return</span> res    &#125;        res += <span class="hljs-string">&quot;.&quot;</span>    numMap := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">int</span>]<span class="hljs-keyword">int</span>)    numMap[num] = <span class="hljs-built_in">len</span>(res)    <span class="hljs-keyword">for</span> num != <span class="hljs-number">0</span> &#123;        num *= <span class="hljs-number">10</span>        res += strconv.Itoa(num/den)        num %= den        <span class="hljs-keyword">if</span> index, ok := numMap[num];ok&#123;            res = res[:index] + <span class="hljs-string">&quot;(&quot;</span> + res[index:] + <span class="hljs-string">&quot;)&quot;</span>            <span class="hljs-keyword">break</span>        &#125;<span class="hljs-keyword">else</span>&#123;            numMap[num] = <span class="hljs-built_in">len</span>(res)        &#125;    &#125;    <span class="hljs-keyword">return</span> res&#125;</code></pre>]]></content>
     
     
+    <categories>
+      
+      <category>算法</category>
+      
+      <category>LeetCode</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>算法</tag>
+      
+      <tag>哈希</tag>
+      
+    </tags>
     
   </entry>
   
