@@ -17,23 +17,10 @@
   <meta name="description" content="">
   <meta name="author" content="keleqnma">
   <meta name="keywords" content="">
-  <title>盗版小说网站爬虫指北 - Yellow dog&#39;s den</title>
+  <title>标签 - 爬虫 - Yellow dog&#39;s den</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
-
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
-
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
-    
-  
-
-  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -56,7 +43,7 @@
 
 
 <body>
-  <header style="height: 70vh;">
+  <header style="height: 80vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -150,60 +137,23 @@
 </nav>
 
     <div class="banner intro-2" id="background" parallax=true
-         style="background: url('/img/default.png') no-repeat center center;
+         style="background: url('/img/background/yellow_dog.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0)">
           <div class="container page-header text-center fade-in-up">
             <span class="h2" id="subtitle">
               
             </span>
           
             
+            <br>
+            <span class="h2" id="hitokoto">
+              
+            </span>
+            
 
           
-              <div class="mt-3">
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-author" aria-hidden="true"></i>
-      keleqnma
-    </span>
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-11-14 22:33" pubdate>
-        星期六, 十一月 14日 2020, 10:33 晚上
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      321 字
-    </span>
-  
-
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      3
-       分钟
-    </span>
-  
-
-  
-  
-</div>
-
-            
           </div>
 
           
@@ -214,125 +164,37 @@
 
   <main>
     
+      <div class="container nopadding-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<div class="list-group">
+  <p class="h4">共计 1 篇文章</p>
+  <hr>
+  
+    
       
+      <p class="h5">2020</p>
+    
+    <a href="/2020/11/14/%E7%9B%97%E7%89%88%E5%B0%8F%E8%AF%B4%E7%88%AC%E8%99%AB%E6%8C%87%E5%8C%97/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">盗版小说网站爬虫指北</span>
+      <time style="float: right;">11-14</time>
+    </a>
+  
+</div>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="container nopadding-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <article class="post-content mx-auto" id="post">
-            <!-- SEO header -->
-            <h1 style="display: none">盗版小说网站爬虫指北</h1>
-            
-            <div class="markdown-body" id="post-body">
-              <p>由于前段日子误操作把手机里的小说都删了，就重操旧业爬取盗版小说网站，小说爬虫算是轻量级爬虫，盗版小说网站比起正版小说网站，没什么验证码，用vue和react的都少，网页三剑客所见即所得，也不用selenium这种东西去模拟点击，当然，盗版小说网站服务器通常很烂很烂，你要是爬猛了发现速度突然慢下来请求大面积失败了，除了ip拦截的可能性之外，也有可能是你爬虫把人家服务器搞崩了……</p>
-<p>总体来说，大部分盗版小说网站可以说对爬虫没什么防范措施，顶多就是你爬猛了给你封ip，非常适合用来练手，爬起来也很有快感！那么要确定的就是两个事情：</p>
-<ol>
-<li>这个网站能承受多少请求？封请求的上限是多少？</li>
-<li>你的爬虫机，你的网络速度上限是多少？</li>
-</ol>
-<p>确定了之后调整一下参数，剩下来的就是通用的技术流程。</p>
-<h2 id="1-如何定位元素？"><a href="#1-如何定位元素？" class="headerlink" title="1. 如何定位元素？"></a>1. 如何定位元素？</h2><h2 id="2-多线程如何稳定爬取速率？"><a href="#2-多线程如何稳定爬取速率？" class="headerlink" title="2. 多线程如何稳定爬取速率？"></a>2. 多线程如何稳定爬取速率？</h2><h2 id="3-DNS解析缓存？"><a href="#3-DNS解析缓存？" class="headerlink" title="3. DNS解析缓存？"></a>3. DNS解析缓存？</h2><h2 id="4-IP池？"><a href="#4-IP池？" class="headerlink" title="4. IP池？"></a>4. IP池？</h2><h2 id="5-长连接短连接？"><a href="#5-长连接短连接？" class="headerlink" title="5. 长连接短连接？"></a>5. 长连接短连接？</h2>
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E9%BB%84%E7%8B%97%E6%9D%82%E8%B0%88/">黄狗杂谈</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E7%88%AC%E8%99%AB/">爬虫</a>
-                    
-                  </div>
-                
+
+
               </div>
-              
-                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
-              
-              
-                <div class="post-prevnext row">
-                  <article class="post-prev col-6">
-                    
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2020/10/28/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-Leetcode-166-Fraction-to-Recurring-Decimal/">
-                        <span class="hidden-mobile">每天一题 Leetcode 166. Fraction to Recurring Decimal</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
             </div>
-
-            
-              <!-- Comments -->
-              <article class="comments" id="comments">
-                
-                
-  <div class="disqus" style="width:100%">
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-      var disqus_config = function () {
-        this.page.url = 'http://example.com/2020/11/14/%E7%9B%97%E7%89%88%E5%B0%8F%E8%AF%B4%E7%88%AC%E8%99%AB%E6%8C%87%E5%8C%97/';
-        this.page.identifier = '/2020/11/14/%E7%9B%97%E7%89%88%E5%B0%8F%E8%AF%B4%E7%88%AC%E8%99%AB%E6%8C%87%E5%8C%97/';
-      };
-      function loadDisqus() {
-        (function () {
-          var d = document,
-            s = d.createElement('script');
-          s.src = '//' + 'fluid' + '.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', new Date());
-          (d.head || d.body).appendChild(s);
-        })();
-      }
-      waitElementVisible('disqus_thread', loadDisqus);
-    </script>
-    <noscript>Please enable JavaScript to view the
-      <a target="_blank" href="https://disqus.com/?ref_noscript" rel="nofollow noopener noopener">comments powered by Disqus.</a>
-    </noscript>
-  </div>
-
-
-              </article>
-            
-          </article>
+          </div>
         </div>
       </div>
-    </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div id="tocbot"></div>
-</div>
-
-      </div>
-    
-  </div>
-</div>
-
-<!-- Custom -->
-
-
     
   </main>
 
@@ -466,31 +328,6 @@
 
 
 
-  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
-  <script>
-    $(document).ready(function () {
-      var boardCtn = $('#board-ctn');
-      var boardTop = boardCtn.offset().top;
-
-      tocbot.init({
-        tocSelector: '#tocbot',
-        contentSelector: '#post-body',
-        headingSelector: 'h1,h2,h3,h4,h5,h6',
-        linkClass: 'tocbot-link',
-        activeLinkClass: 'tocbot-active-link',
-        listClass: 'tocbot-list',
-        isCollapsedClass: 'tocbot-is-collapsed',
-        collapsibleClass: 'tocbot-is-collapsible',
-        collapseDepth: 0,
-        scrollSmooth: true,
-        headingsOffset: -boardTop
-      });
-      if ($('.toc-list-item').length > 0) {
-        $('#toc').css('visibility', 'visible');
-      }
-    });
-  </script>
-
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -512,25 +349,10 @@
         });
     }
     
-        typing("subtitle", "盗版小说网站爬虫指北")
+        typing("subtitle", "标签 - 爬虫")
     
   </script>
 
-
-  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
-  <script>
-    anchors.options = {
-      placement: "right",
-      visible: "hover",
-      
-    };
-    var el = "h1,h2,h3,h4,h5,h6".split(",");
-    var res = [];
-    for (item of el) {
-      res.push(".markdown-body > " + item)
-    }
-    anchors.add(res.join(", "))
-  </script>
 
 
 
@@ -545,20 +367,6 @@
   </script>
 
 
-
-  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-  <script>
-    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
-      function () {
-        var element = document.createElement('a');
-        $(element).attr('data-fancybox', 'images');
-        $(element).attr('href', $(this).attr('src'));
-        $(this).wrap(element);
-      }
-    );
-  </script>
 
 
 
