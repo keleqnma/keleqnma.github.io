@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="keleqnma">
   <meta name="keywords" content="">
-  <title>每天一题 Leetcode 166. Fraction to Recurring Decimal - Yellow dog&#39;s den</title>
+  <title>盗版小说网站爬虫指北 - Yellow dog&#39;s den</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-10-28 23:09" pubdate>
-        星期三, 十月 28日 2020, 11:09 晚上
+      <time datetime="2020-11-14 22:33" pubdate>
+        星期六, 十一月 14日 2020, 10:33 晚上
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      290 字
+      321 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      3
        分钟
     </span>
   
@@ -224,84 +224,22 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">每天一题 Leetcode 166. Fraction to Recurring Decimal</h1>
+            <h1 style="display: none">盗版小说网站爬虫指北</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>利用哈希表找重复情况，注意corner case。</p>
-<a id="more"></a>
-
-<h1 id="每天一题-Leetcode-166-Fraction-to-Recurring-Decimal"><a href="#每天一题-Leetcode-166-Fraction-to-Recurring-Decimal" class="headerlink" title="每天一题 Leetcode 166. Fraction to Recurring Decimal"></a>每天一题 Leetcode 166. Fraction to Recurring Decimal</h1><h2 id="1-题目"><a href="#1-题目" class="headerlink" title="1. 题目"></a>1. 题目</h2><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/fraction-to-recurring-decimal/">https://leetcode.com/problems/fraction-to-recurring-decimal/</a></p>
-<div class="note note-primary">
-            <p>Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.</p><p>If the fractional part is repeating, enclose the repeating part in parentheses.</p><p>If multiple answers are possible, return any of them.</p><p>It is guaranteed that the length of the answer string is less than 104 for all the given inputs.</p><pre><code>Example 1:Input: numerator = 1, denominator = 2Output: &quot;0.5&quot;Example 2:Input: numerator = 2, denominator = 1Output: &quot;2&quot;Example 3:Input: numerator = 2, denominator = 3Output: &quot;0.(6)&quot;Example 4:Input: numerator = 4, denominator = 333Output: &quot;0.(012)&quot;Example 5:Input: numerator = 1, denominator = 5Output: &quot;0.2&quot;</code></pre><p>Constraints:</p><ul><li><p>-231 &lt;= numerator, denominator &lt;= 231 - 1</p></li><li><p>denominator != 0 </p></li></ul>
-          </div>
-
-
-<h2 id="2-解法"><a href="#2-解法" class="headerlink" title="2. 解法"></a>2. 解法</h2><p>代码：</p>
-<pre><code class="hljs go"><span class="hljs-keyword">import</span>(
-    <span class="hljs-string">&quot;strconv&quot;</span>
-    <span class="hljs-string">&quot;fmt&quot;</span>
-)
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">abs</span><span class="hljs-params">(n <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">int</span></span> &#123;
-    <span class="hljs-keyword">if</span> n &gt; <span class="hljs-number">0</span> &#123;
-        <span class="hljs-keyword">return</span> n
-    &#125;
-    <span class="hljs-keyword">return</span> -n
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">fractionToDecimal</span><span class="hljs-params">(numerator <span class="hljs-keyword">int</span>, denominator <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">string</span></span> &#123;
-    <span class="hljs-keyword">var</span> res <span class="hljs-keyword">string</span>
-    <span class="hljs-keyword">if</span> ((numerator &gt; <span class="hljs-number">0</span>) &amp;&amp; (denominator &lt; <span class="hljs-number">0</span>)) || ((numerator &lt; <span class="hljs-number">0</span>) &amp;&amp; (denominator &gt; <span class="hljs-number">0</span>))&#123;
-        res += <span class="hljs-string">&quot;-&quot;</span>
-    &#125;
-    
-    num := abs(numerator)
-    den := abs(denominator)
-    res += strconv.Itoa(num/den)
-    num %= den
-    <span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>&#123;
-        <span class="hljs-keyword">return</span> res
-    &#125;
-    
-    res += <span class="hljs-string">&quot;.&quot;</span>
-    numMap := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">int</span>]<span class="hljs-keyword">int</span>)
-    numMap[num] = <span class="hljs-built_in">len</span>(res)
-    <span class="hljs-keyword">for</span> num != <span class="hljs-number">0</span> &#123;
-        num *= <span class="hljs-number">10</span>
-        res += strconv.Itoa(num/den)
-        num %= den
-        <span class="hljs-keyword">if</span> index, ok := numMap[num];ok&#123;
-            res = res[:index] + <span class="hljs-string">&quot;(&quot;</span> + res[index:] + <span class="hljs-string">&quot;)&quot;</span>
-            <span class="hljs-keyword">break</span>
-        &#125;<span class="hljs-keyword">else</span>&#123;
-            numMap[num] = <span class="hljs-built_in">len</span>(res)
-        &#125;
-    &#125;
-    <span class="hljs-keyword">return</span> res
-&#125;</code></pre>
+              <p>由于前段日子误操作把手机里的小说都删了，就重操旧业爬取盗版小说网站，小说爬虫算是轻量级爬虫，盗版小说网站比起正版小说网站，没什么验证码，用vue和react的都少，网页三剑客所见即所得，也不用selenium这种东西去模拟点击，当然，盗版小说网站服务器通常很烂很烂，你要是爬猛了发现速度突然慢下来请求大面积失败了，除了ip拦截的可能性之外，也有可能是你爬虫把人家服务器搞崩了……</p>
+<p>总体来说，大部分盗版小说网站可以说对爬虫没什么防范措施，顶多就是你爬猛了给你封ip，非常适合用来练手，爬起来也很有快感！那么要确定的就是两个事情：</p>
+<ol>
+<li>这个网站能承受多少请求？封请求的上限是多少？</li>
+<li>你的爬虫机，你的网络速度上限是多少？</li>
+</ol>
+<p>确定了之后调整一下参数，剩下来的就是通用的技术流程。</p>
+<h2 id="1-如何定位元素？"><a href="#1-如何定位元素？" class="headerlink" title="1. 如何定位元素？"></a>1. 如何定位元素？</h2><h2 id="2-多线程如何稳定爬取速率？"><a href="#2-多线程如何稳定爬取速率？" class="headerlink" title="2. 多线程如何稳定爬取速率？"></a>2. 多线程如何稳定爬取速率？</h2><h2 id="3-DNS解析缓存？"><a href="#3-DNS解析缓存？" class="headerlink" title="3. DNS解析缓存？"></a>3. DNS解析缓存？</h2><h2 id="4-IP池？"><a href="#4-IP池？" class="headerlink" title="4. IP池？"></a>4. IP池？</h2><h2 id="5-长连接短连接？"><a href="#5-长连接短连接？" class="headerlink" title="5. 长连接短连接？"></a>5. 长连接短连接？</h2>
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                    
-                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/LeetCode/">LeetCode</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E5%93%88%E5%B8%8C/">哈希</a>
-                    
-                  </div>
                 
               </div>
               
@@ -312,18 +250,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/14/%E7%9B%97%E7%89%88%E5%B0%8F%E8%AF%B4%E7%88%AC%E8%99%AB%E6%8C%87%E5%8C%97/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">盗版小说网站爬虫指北</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/10/26/%E4%BB%8E0%E5%AE%9E%E7%8E%B0Golang%E9%AB%98%E6%80%A7%E8%83%BD%E5%AE%9A%E6%97%B6%E5%99%A8/">
-                        <span class="hidden-mobile">从0实现Golang高性能定时器</span>
+                      <a href="/2020/10/28/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-Leetcode-166-Fraction-to-Recurring-Decimal/">
+                        <span class="hidden-mobile">每天一题 Leetcode 166. Fraction to Recurring Decimal</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -342,8 +274,8 @@
     <div id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://example.com/2020/10/28/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-Leetcode-166-Fraction-to-Recurring-Decimal/';
-        this.page.identifier = '/2020/10/28/%E6%AF%8F%E5%A4%A9%E4%B8%80%E9%A2%98-Leetcode-166-Fraction-to-Recurring-Decimal/';
+        this.page.url = 'http://example.com/2020/11/14/%E7%9B%97%E7%89%88%E5%B0%8F%E8%AF%B4%E7%88%AC%E8%99%AB%E6%8C%87%E5%8C%97/';
+        this.page.identifier = '/2020/11/14/%E7%9B%97%E7%89%88%E5%B0%8F%E8%AF%B4%E7%88%AC%E8%99%AB%E6%8C%87%E5%8C%97/';
       };
       function loadDisqus() {
         (function () {
@@ -562,7 +494,7 @@
         });
     }
     
-        typing("subtitle", "每天一题 Leetcode 166. Fraction to Recurring Decimal")
+        typing("subtitle", "盗版小说网站爬虫指北")
     
   </script>
 
