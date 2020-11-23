@@ -4,11 +4,24 @@
   
   
   <entry>
+    <title>Socket编程</title>
+    <link href="/2020/11/23/Socket%E7%BC%96%E7%A8%8B/"/>
+    <url>/2020/11/23/Socket%E7%BC%96%E7%A8%8B/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>盗版小说网站爬🐛简易指南</title>
     <link href="/2020/11/14/%E7%9B%97%E7%89%88%E5%B0%8F%E8%AF%B4%E7%88%AC%E8%99%AB%E6%8C%87%E5%8C%97/"/>
     <url>/2020/11/14/%E7%9B%97%E7%89%88%E5%B0%8F%E8%AF%B4%E7%88%AC%E8%99%AB%E6%8C%87%E5%8C%97/</url>
     
-    <content type="html"><![CDATA[<p>由于前段日子误操作把手机里的小说都删了，就重操旧业爬取盗版小说网站，小说爬虫算是轻量级爬虫，盗版小说网站比起正版小说网站，没什么验证码，用vue和react的都少，网页三剑客所见即所得，也不用selenium这种东西去模拟点击，当然，盗版小说网站服务器通常很烂很烂，你要是爬猛了发现速度突然慢下来请求大面积失败了，除了ip拦截的可能性之外，也有可能是你爬虫把人家服务器搞崩了……</p><p>爬取盗版小说网站也不需要考虑去重，不需要循环爬取，是非常简单的多叉式流程爬取：</p><p>首页 ➡️ 书籍分类/排行榜页 ➡️ 书籍章节索引页 ➡️ 爬取章节，写入数据库</p><p>大部分盗版小说网站对爬虫没什么防范措施，顶多就是你爬猛了给你封ip，非常适合用来练手，爬起来也很有快感！那么要确定的就是两个事情：</p><ol><li>这个网站能承受多少请求？封请求的上限是多少？</li><li>你的爬虫机，你的网络速度上限是多少？</li></ol><p>确定了之后调整一下参数，剩下来的就是通用流程。</p><h2 id="1-定位爬取元素？"><a href="#1-定位爬取元素？" class="headerlink" title="1. 定位爬取元素？"></a>1. 定位爬取元素？</h2><p>理论上说网页解析速度re &gt; css &gt; xpath，不管是为了爬虫的稳定还是为了效率，都尽量使用css选择器代替Xpath。但是我用Xpath比较顺手，这种轻量级爬虫也无所谓。</p><h2 id="2-多协程-线程如何稳定爬取速率？"><a href="#2-多协程-线程如何稳定爬取速率？" class="headerlink" title="2. 多协程/线程如何稳定爬取速率？"></a>2. 多协程/线程如何稳定爬取速率？</h2><p>这是一个典型的多生产者多消费者问题。</p><p>生产：可以开始爬取的协程/线程个数，</p><h2 id="3-DNS解析缓存？"><a href="#3-DNS解析缓存？" class="headerlink" title="3. DNS解析缓存？"></a>3. DNS解析缓存？</h2><h2 id="4-代理IP池？"><a href="#4-代理IP池？" class="headerlink" title="4. 代理IP池？"></a>4. 代理IP池？</h2><h2 id="5-长连接短连接？"><a href="#5-长连接短连接？" class="headerlink" title="5. 长连接短连接？"></a>5. 长连接短连接？</h2><h2 id="6-部分代码逻辑"><a href="#6-部分代码逻辑" class="headerlink" title="6. 部分代码逻辑"></a>6. 部分代码逻辑</h2>]]></content>
+    <content type="html"><![CDATA[<p>由于前段日子误操作把手机里的小说都删了，就重操旧业爬取盗版小说网站，小说爬虫算是轻量级爬虫，盗版小说网站比起正版小说网站，没什么验证码，用vue和react的都少，网页三剑客所见即所得，也不用selenium这种东西去模拟点击，当然，盗版小说网站服务器通常很烂很烂，你要是爬猛了发现速度突然慢下来请求大面积失败了，除了ip拦截的可能性之外，也有可能是你爬虫把人家服务器搞崩了……</p><p>爬取盗版小说网站也不需要考虑去重，不需要循环爬取，是非常简单的多叉式流程爬取：</p><p>首页 ➡️ 书籍分类/排行榜页 ➡️ 书籍章节索引页 ➡️ 爬取章节，写入数据库</p><p>大部分盗版小说网站对爬虫没什么防范措施，顶多就是你爬猛了给你封ip，非常适合用来练手，爬起来也很有快感！那么要确定的就是两个事情：</p><ol><li>这个网站能承受多少请求？封请求的上限是多少？</li><li>你的爬虫机，你的网络速度上限是多少？</li></ol><p>确定了之后调整一下参数，剩下来的就是通用流程。</p><h2 id="1-定位爬取元素？"><a href="#1-定位爬取元素？" class="headerlink" title="1. 定位爬取元素？"></a>1. 定位爬取元素？</h2><p>理论上说网页解析速度re &gt; css &gt; xpath，不管是为了爬虫的稳定还是为了效率，都尽量使用css选择器代替Xpath。但是我用Xpath比较顺手，这种轻量级爬虫也无所谓。</p><h2 id="2-多协程-线程如何稳定爬取速率？"><a href="#2-多协程-线程如何稳定爬取速率？" class="headerlink" title="2. 多协程/线程如何稳定爬取速率？"></a>2. 多协程/线程如何稳定爬取速率？</h2><p>这是一个典型的多生产者多消费者问题。</p><p>生产：可以开始爬取的协程/线程个数，</p><h2 id="3-DNS解析缓存？"><a href="#3-DNS解析缓存？" class="headerlink" title="3. DNS解析缓存？"></a>3. DNS解析缓存？</h2><p>dns解析一般会花费几十ms不等的时间，因为我是在mac上跑的，有时候会出现DNS解析超时的情况，用一个简单的map结构保存域名和其对应的IP，隔一段时间刷新一次，这样就能节省重复解析花费的时间和资源。</p><pre><code class="hljs golang">client = &amp;http.Client&#123;Transport: &amp;http.Transport&#123;......Dial: <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(network <span class="hljs-keyword">string</span>, address <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(net.Conn, error)</span></span> &#123;separator := strings.LastIndex(address, <span class="hljs-string">&quot;:&quot;</span>)ip, _ := client.dnsCache.FetchOneString(address[:separator])<span class="hljs-keyword">return</span> net.Dial(<span class="hljs-string">&quot;tcp&quot;</span>, ip+address[separator:])&#125;,                ......&#125;,            ......&#125;</code></pre><p>这里的这个dnsCache就是这个map结构的封装，调用fetch后会首先在本地查找是否有缓存，如果没有或者已过期则会调用<code>net.LookupIP</code>查找更新缓存，随后返回。</p><h2 id="4-代理IP池？"><a href="#4-代理IP池？" class="headerlink" title="4. 代理IP池？"></a>4. 代理IP池？</h2><pre><code class="hljs golang">client = &amp;http.Client&#123;Transport: &amp;http.Transport&#123;Proxy:               http.ProxyURL(proxy),MaxIdleConnsPerHost: clientSize * <span class="hljs-number">2</span>,                .....            &#125;,            ......&#125;</code></pre><p>封装一个Getter接口，给几个免费的代理网站编写爬虫脚本爬取代理IP，更新爬取测试代理是否能用（是否能连通需要爬取的网站），其实代理池虽然多，但是能用的代理比例很低，这种体量的小爬虫控制速率一般就没必要用代理了，需求高速率的话可以在这方面再努力努力。</p><h2 id="5-长连接短连接？"><a href="#5-长连接短连接？" class="headerlink" title="5. 长连接短连接？"></a>5. 长连接短连接？</h2><p>Golang的Client一般会含有内部状态（缓存 TCP 连接），因此 Client 类型值应尽量被重用而不是每次需要都创建新的。 Client 类型值可以安全的被多个goroutine同时使用，所以一般建议是重用client，使用长连接并且把MaxIdleConnsPerHost设大一点。</p><h2 id="6-分布式爬虫？"><a href="#6-分布式爬虫？" class="headerlink" title="6. 分布式爬虫？"></a>6. 分布式爬虫？</h2><h2 id="6-部分代码逻辑"><a href="#6-部分代码逻辑" class="headerlink" title="6. 部分代码逻辑"></a>6. 部分代码逻辑</h2>]]></content>
     
     
     <categories>
